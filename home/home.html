@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>쿠키런: 벽돌깨기</title>
+  <link rel="stylesheet" href="./home.css" />
+  <script src="./home.js"></script>
+</head>
+<body>
+  <div id="startScreen">
+    <h1>쿠키런: 벽돌깨기</h1>
+    <div>
+      <label>쿠키 선택:
+        <select id="cookieSelect">
+          <option value="brave">용감한 쿠키</option>
+          <option value="butter">버터맛 쿠키</option>
+          <option value="zombie">좀비맛 쿠키</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <label>스테이지 선택:
+        <select id="stageSelect">
+          <option value="1">마녀의 오븐</option>
+          <option value="2">해바라기 숲</option>
+          <option value="3">낮 바다</option>
+          <option value="bonus">보너스 스테이지</option>
+        </select>
+      </label>
+    </div>
+    <button onclick="startGame()">게임 시작</button>
+    <p>화면을 터치하여 시작하세요</p>
+  </div>
+
+  <div id="scoreBoard">점수: <span id="score">0</span></div>
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
+</body>
+</html>
