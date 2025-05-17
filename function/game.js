@@ -21,9 +21,6 @@ let blueBlocks = [];
 // 플레이어 정보
 const playerImage = new Image();
 playerImage.src = "../images/brave.png";
-playerImage.onload = () => {
-  startGame();
-};
 
 const player = {
   x: 50,
@@ -143,7 +140,6 @@ function startGame() {
   countdown();
   gameLoop();
 }
-
 function animatePlayer() {
   // 부드러운 흔들림 없이 그냥 현재 위치에 그리기  
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
@@ -154,4 +150,8 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === "ArrowDown") {
     player.y = Math.min(player.y + 20, canvas.height - player.height); // 아래로 이동 (최대 캔버스 경계)
   }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  startGame(); 
 });
