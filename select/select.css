@@ -84,7 +84,8 @@ div p {
   margin: 0 0 20px 0;
 }
 
-.select_btn {
+.select_c_btn,
+.select_s_btn {
   font-family: "CookieRun-Regular";
   margin-top: 10px;
   padding: 10px 20px;
@@ -97,11 +98,13 @@ div p {
   transition: background-color 0.2s;
 }
 
-.select_btn:hover {
+.select_c_btn:hover,
+.select_s_btn:hover {
   background-color: #2e8b57;
 }
 
-.select_btn.selected {
+.select_c_btn.selected,
+.select_s_btn.selected {
   background-color: gray;
   cursor: default;
 }

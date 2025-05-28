@@ -17,7 +17,7 @@ function showTab(tabName) {
 
 function selectCookie(button, cookieName) {
   // 모든 버튼 초기화
-  const allButtons = document.querySelectorAll(".select_btn");
+  const allButtons = document.querySelectorAll(".select_c_btn");
   allButtons.forEach((btn) => {
     btn.textContent = "선택하기";
     btn.disabled = false;
@@ -33,7 +33,20 @@ function selectCookie(button, cookieName) {
   localStorage.setItem("selectedCookie", cookieName);
 }
 
-function selectStage(stageId) {
+function selectStage(button, stageId) {
+  // 모든 스테이지 버튼 초기화
+  const allStageButtons = document.querySelectorAll(".select_s_btn");
+  allStageButtons.forEach((btn) => {
+    btn.textContent = "선택하기";
+    btn.disabled = false;
+    btn.classList.remove("selected");
+  });
+
+  // 선택한 버튼 스타일 변경
+  button.textContent = "선택됨";
+  button.disabled = true;
+  button.classList.add("selected");
+
+  // 선택된 스테이지 저장
   localStorage.setItem("selectedStage", stageId);
-  alert(`${stageId} 스테이지를 선택하셨습니다!`);
 }
