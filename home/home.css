@@ -1,15 +1,29 @@
+@font-face {
+  font-family: "CookieRun-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: "Arial", sans-serif;
+  font-family: "CookieRun-Regular", sans-serif;
   background: linear-gradient(to top, #fdd, #fff7f7);
   overflow: hidden;
+
+  background-image: url("../images/main_display.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  height: 100vh;
 }
 #gameCanvas {
   display: block;
   margin: 0 auto;
-  background-color: #cce5ff;
-  border: 3px solid #555;
 }
 #startScreen {
   position: absolute;
@@ -21,7 +35,8 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.5);
+
+  background-color: rgba(0, 0, 0, 0.2);
   color: white;
   font-size: 2rem;
 }
@@ -37,4 +52,5 @@ body {
   background: rgba(255, 255, 255, 0.8);
   padding: 10px;
   border-radius: 5px;
+  display: none;
 }
