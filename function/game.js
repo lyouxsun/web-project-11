@@ -22,6 +22,9 @@ let blueBlocks = [];
 const playerImage = new Image();
 playerImage.src = "../images/cookies/brave.png";
 
+const bgimg = new Image();
+bgimg.src = '../images/background/stage1.png';
+
 const player = {
   x: 50,
   y: 200,
@@ -96,8 +99,7 @@ function update() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#87CEFA";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bgimg, 0, 0, canvas.width, canvas.height); // Draw background img.
 
   animatePlayer();
 
@@ -153,6 +155,7 @@ function startGame() {
   countdown();
   gameLoop();
 }
+
 function animatePlayer() {
   // 부드러운 흔들림 없이 그냥 현재 위치에 그리기
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
