@@ -10,7 +10,7 @@ const baseSpeedMap = {
 };
 
 // 선택된 쿠키
-const selectedCookie = localStorage.getItem("cookie") || "brave";
+// const selectedCookie = localStorage.getItem("cookie") || "brave";
 
 // 현재 쿠키의 기본 속도 반환
 function getBaseSpeed() {
