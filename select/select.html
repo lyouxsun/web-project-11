@@ -2,44 +2,63 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>쿠키 선택</title>
+    <title>선택창</title>
     <link rel="stylesheet" href="select.css" />
-    <script src="./select.js"></script>
+    <script src="select.js" defer></script>
   </head>
   <body>
-    <h1>쿠키를 선택하세요</h1>
+    <img id="backgroundImg" src="../images/background/oven.png" alt="배경" />
 
-    <div class="cookie-list">
-      <div class="cookie-card" onclick="selectCookie('brave')">
-        <img
-          src="../images/cookies/brave.png"
-          alt="용감한 쿠키"
-          width="325px"
-          height="400px"
-        />
-        <p>용감한 쿠키</p>
-      </div>
+    <div class="tab-buttons">
+      <button onclick="showTab('cookie')">쿠키 선택</button>
+      <button onclick="showTab('stage')">스테이지 선택</button>
+    </div>
 
-      <div class="cookie-card" onclick="selectCookie('butter')">
-        <img
-          src="../images/cookies/boarder.png"
-          alt="보더맛 쿠키"
-          width="340px"
-          height="400px"
-        />
-        <p>보더맛 쿠키</p>
-      </div>
-
-      <div class="cookie-card" onclick="selectCookie('zombie')">
-        <img
-          src="../images/cookies/zombie.png"
-          alt="좀비맛 쿠키"
-          width="340px"
-          height="400px"
-        />
-        <p>좀비맛 쿠키</p>
+    <!-- 쿠키 선택창 -->
+    <div id="cookieTab" class="tab-content">
+      <h1>쿠키 선택하기</h1>
+      <div class="cookie-list">
+        <div class="cookie-card" onclick="selectCookie('brave')">
+          <img
+            src="../images/cookies/brave.png"
+            alt="용감한 쿠키"
+            width="315px"
+            height="400px"
+          />
+          <p>용감한 쿠키</p>
+        </div>
+        <div class="cookie-card" onclick="selectCookie('boarder')">
+          <img
+            src="../images/cookies/boarder.png"
+            alt="보더맛 쿠키"
+            width="340px"
+            height="400px"
+          />
+          <p>보더맛 쿠키</p>
+        </div>
+        <div class="cookie-card" onclick="selectCookie('zombie')">
+          <img
+            src="../images/cookies/zombie.png"
+            alt="좀비맛 쿠키"
+            width="340px"
+            height="400px"
+          />
+          <p>좀비맛 쿠키</p>
+        </div>
       </div>
     </div>
+
+    <!-- 스테이지 선택창 -->
+    <div id="stageTab" class="tab-content" style="display: none">
+      <h1>스테이지 선택하기</h1>
+      <div class="stage-list">
+        <button onclick="selectStage('1')">마녀의 오븐</button>
+        <button onclick="selectStage('2')">해바라기 숲</button>
+        <button onclick="selectStage('3')">낮 바다</button>
+        <button onclick="selectStage('bonus')">보너스 스테이지</button>
+      </div>
+    </div>
+
     <div id="buttonDiv">
       <button onclick="startGame()">게임 시작</button>
     </div>
