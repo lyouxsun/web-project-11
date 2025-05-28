@@ -7,6 +7,8 @@ const highScoreEl = document.getElementById("highScore");
 const hpEl = document.getElementById("hp");
 const timerEl = document.getElementById("timer");
 
+const gravity = 0.23;
+
 // 게임 상태 전역 변수
 let score = 0;
 let highScore = 0;
@@ -14,6 +16,10 @@ let hp = 3;
 let timeLeft = 180;
 let running = false;
 let step = 0;
+// let dx = 0;
+let dy = 0;
+let isJumping = false; // 상승 중인가
+let isOnAir = false; // 떠있는가
 
 let redBlocks = [];
 let blueBlocks = [];
@@ -95,6 +101,30 @@ function update() {
   // 화면 밖 제거
   redBlocks = redBlocks.filter((o) => o.x + o.width > 0);
   blueBlocks = blueBlocks.filter((b) => b.x + b.width > 0);
+
+  // 중력 계산
+  // console.log(player.y, canvas.height - player.height);
+  if (player.y < canvas.height - player.height)
+    dy += gravity;
+  else
+    dy = 0;
+
+  // 점프
+  // console.log(isJumping);
+  if (isJumping)
+    dy = -8;
+
+  // 속도 적용
+  if (player.y <= canvas.height - player.height)
+    player.y += dy;
+  if (player.y > canvas.height - player.height)
+    player.y = canvas.height - player.height;
+
+  // 공중에 떠있는가 확인
+  if (player.y < canvas.height - player.height)
+    isOnAir = true;
+  else
+    isOnAir = false;
 }
 
 function draw() {
@@ -160,11 +190,21 @@ function animatePlayer() {
   // 부드러운 흔들림 없이 그냥 현재 위치에 그리기
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
+
 document.addEventListener("keydown", (e) => {
-  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영영
+  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영
 
   if (e.key === "ArrowUp") {
-    player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
+    // console.log('윗 키 눌림');
+    if (!(isJumping || isOnAir)) {
+      isJumping = true;
+      // console.log(isJumping);
+      setTimeout(() => {
+        isJumping = false;
+        // console.log(isJumping, '다시 거짓으로')
+      }, 200);
+    }
+    // player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
   } else if (e.key === "ArrowDown") {
     player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
   }
