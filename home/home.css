@@ -12,20 +12,16 @@ body {
   font-family: "CookieRun-Regular", sans-serif;
   background: linear-gradient(to top, #fdd, #fff7f7);
   overflow: hidden;
-
-  background-image: url("../images/main_display.png");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
   height: 100vh;
+  box-sizing: border-box;
 }
+
 #gameCanvas {
   display: block;
   margin: 0 auto;
 }
 #startScreen {
+  margin-top: 20%;
   position: absolute;
   top: 0;
   left: 0;
@@ -36,7 +32,7 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0);
   color: white;
   font-size: 2rem;
 }
@@ -53,4 +49,15 @@ body {
   padding: 10px;
   border-radius: 5px;
   display: none;
+}
+
+#backgroundImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85vw;
+  height: auto;
+  z-index: -1;
+  opacity: 1;
 }
