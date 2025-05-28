@@ -10,12 +10,19 @@ body {
   font-family: "CookieRun-Regular", sans-serif;
 }
 
-.cookie-list {
+.select-list {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 40px;
   text-align: center;
+}
+
+.select-card {
+  border: 1px solid white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 #buttonDiv {
@@ -25,10 +32,15 @@ body {
 }
 
 h1 {
-  width: 100%;
+  width: 70%;
+  margin: 50px auto 10px auto;
+  padding: 10px 30px;
   text-align: center;
-  margin: 50px 0 50px 0;
   color: white;
+
+  background-color: skyblue;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 약간의 그림자 */
 }
 
 #backgroundImg {
@@ -68,5 +80,28 @@ h1 {
 
 div p {
   color: white;
+  font-size: 30px;
+  margin: 0 0 20px 0;
+}
+
+.select_btn {
+  font-family: "CookieRun-Regular";
+  margin-top: 10px;
+  padding: 10px 20px;
   font-size: 20px;
+  background-color: #3cb371; /* 녹색 */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.select_btn:hover {
+  background-color: #2e8b57;
+}
+
+.select_btn.selected {
+  background-color: gray;
+  cursor: default;
 }
