@@ -20,14 +20,14 @@ let blueBlocks = [];
 
 // 플레이어 정보
 const playerImage = new Image();
-playerImage.src = "../images/brave.png";
+playerImage.src = "../images/cookies/brave.png";
 
 const player = {
   x: 50,
   y: 200,
   width: 40,
   height: 40,
-  image: playerImage
+  image: playerImage,
 };
 
 // 블록 생성 시 움직이지 않도록 dy 제거
@@ -141,7 +141,7 @@ function startGame() {
   gameLoop();
 }
 function animatePlayer() {
-  // 부드러운 흔들림 없이 그냥 현재 위치에 그리기  
+  // 부드러운 흔들림 없이 그냥 현재 위치에 그리기
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
 document.addEventListener("keydown", (e) => {
@@ -153,5 +153,5 @@ document.addEventListener("keydown", (e) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-  startGame(); 
+  startGame();
 });
