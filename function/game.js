@@ -8,6 +8,9 @@ const hpEl = document.getElementById("hp");
 const timerEl = document.getElementById("timer");
 
 const gravity = 0.23;
+const obstacleSpawnInterval = 2000;
+const brickSpawnInterval = 1000;
+const itemSpawnInterval = 3000;
 
 // 게임 상태 전역 변수
 let score = 0;
@@ -20,9 +23,13 @@ let step = 0;
 let dy = 0;
 let isJumping = false; // 상승 중인가
 let isOnAir = false; // 떠있는가
+let lastObstacleSpwanTime = 0;
+let lastBrickSpwanTime = 0;
+let lasstItemSpawnTime = 0;
 
-let redBlocks = [];
-let blueBlocks = [];
+let obstacles = [];
+let bricks = [];
+let items = [];
 
 // 플레이어 정보
 const playerImage = new Image();
@@ -39,28 +46,51 @@ const player = {
   image: playerImage,
 };
 
-// 블록 생성 시 움직이지 않도록 dy 제거
-function spawnBlocks() {
-  if (Math.random() < 0.03) {
-    const y = Math.random() * 300 + 100;
-    const block = {
+function spawnBlocks(timestamp) {
+  if (timestamp - lastObstacleSpwanTime > obstacleSpawnInterval) {
+    let r = Math.random();
+    if (r < 0.5) {
+      const obstacleY = 350;
+      const obstacle = {
+        x: 800,
+        y: obstacleY,
+        width: 30,
+        height: 30,
+        speed: 1.5,
+      };
+      obstacles.push({ ...obstacle });
+    }
+    lastObstacleSpwanTime = timestamp;
+  }
+  if (timestamp - lastBrickSpwanTime > brickSpawnInterval) {
+    const brickY = 220;
+    const brick = {
       x: 800,
-      y,
+      y: brickY,
       width: 30,
       height: 30,
       speed: 1.5,
     };
-    if (Math.random() < 0.5) {
-      redBlocks.push({ ...block }); // 장애물
-    } else {
-      blueBlocks.push({ ...block }); // 아이템 (고정)
-    }
+    bricks.push({ ...brick });
+    lastBrickSpwanTime = timestamp;
+  }
+  if (timestamp - lasstItemSpawnTime > itemSpawnInterval) {
+    const itemY = 300;
+    const item = {
+      x: 800,
+      y: itemY,
+      width: 30,
+      height: 30,
+      speed: 1.5
+    };
+    items.push({ ...item });
+    lasstItemSpawnTime = timestamp;
   }
 }
 
 function update() {
   // 장애물 이동 및 충돌
-  redBlocks.forEach((o, i) => {
+  obstacles.forEach((o, i) => {
     o.x -= o.speed;
     if (
       player.x < o.x + o.width &&
@@ -79,12 +109,12 @@ function update() {
           alert("게임 오버!");
         }
       }
-      redBlocks.splice(i, 1);
+      obstacles.splice(i, 1);
     }
   });
 
   // update에서 y 이동 삭제
-  blueBlocks.forEach((b, i) => {
+  bricks.forEach((b, i) => {
     b.x -= b.speed;
     if (
       player.x < b.x + b.width &&
@@ -94,23 +124,45 @@ function update() {
     ) {
       score++;
       if (score > highScore) highScore = score;
-      blueBlocks.splice(i, 1);
+      bricks.splice(i, 1);
     }
   });
 
+  items.forEach((t, i) => {
+    t.x -= t.speed;
+    if (
+      player.x < t.x + t.width &&
+      player.x + player.width > t.x &&
+      player.y < t.y + t.height &&
+      player.y + player.height > t.y
+    ) {
+      let r = Math.random() * 3;
+      if (r > 2) {
+        console.log('속도 증가');
+        // activateSpeedBoost();
+      } else if (r > 1) {
+        console.log('HP 회복');
+        restoreHP();
+      } else {
+        console.log('보너스 점수');
+        bonusScore();
+      }
+      items.splice(i, 1);
+    }
+  })
+
   // 화면 밖 제거
-  redBlocks = redBlocks.filter((o) => o.x + o.width > 0);
-  blueBlocks = blueBlocks.filter((b) => b.x + b.width > 0);
+  obstacles = obstacles.filter((o) => o.x + o.width > 0);
+  bricks = bricks.filter((b) => b.x + b.width > 0);
+  items = items.filter((t) => t.x + t.width > 0);
 
   // 중력 계산
-  // console.log(player.y, canvas.height - player.height);
   if (player.y < canvas.height - player.height)
     dy += gravity;
   else
     dy = 0;
 
   // 점프
-  // console.log(isJumping);
   if (isJumping)
     dy = -8;
 
@@ -133,14 +185,19 @@ function draw() {
 
   animatePlayer();
 
-  for (const o of redBlocks) {
+  for (const o of obstacles) {
     ctx.fillStyle = "red";
     ctx.fillRect(o.x, o.y, o.width, o.height);
   }
 
-  for (const b of blueBlocks) {
+  for (const b of bricks) {
     ctx.fillStyle = "blue";
     ctx.fillRect(b.x, b.y, b.width, b.height); // 네모로 그림
+  }
+
+  for (const t of items) {
+    ctx.fillStyle = "green";
+    ctx.fillRect(t.x, t.y, t.width, t.height);
   }
 }
 
@@ -157,14 +214,14 @@ function countdown() {
   }, 1000);
 }
 
-function gameLoop() {
+function gameLoop(timestamp) {
   if (!running) return;
   update();
   draw();
   scoreEl.textContent = score;
   highScoreEl.textContent = highScore;
   hpEl.textContent = hp;
-  spawnBlocks();
+  spawnBlocks(timestamp);
   requestAnimationFrame(gameLoop);
 }
 
@@ -183,7 +240,7 @@ function startGame() {
   redBlocks = [];
   blueBlocks = [];
   countdown();
-  gameLoop();
+  requestAnimationFrame(gameLoop);
 }
 
 function animatePlayer() {
@@ -205,9 +262,10 @@ document.addEventListener("keydown", (e) => {
       }, 200);
     }
     // player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
-  } else if (e.key === "ArrowDown") {
-    player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
-  }
+  } 
+  // else if (e.key === "ArrowDown") {
+  //   player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
+  // }
 });
 
 
