@@ -10,8 +10,8 @@
     <img id="backgroundImg" src="../images/background/oven.png" alt="배경" />
 
     <div class="tab-buttons">
-      <button onclick="showTab('cookie')">쿠키 선택</button>
-      <button onclick="showTab('stage')">스테이지 선택</button>
+      <button onclick="showTab('cookie')">쿠키</button>
+      <button onclick="showTab('stage')">스테이지</button>
     </div>
 
     <!-- 쿠키 선택창 -->
@@ -26,7 +26,7 @@
             width="315px"
             height="400px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'brave')">
+          <button class="select_c_btn" onclick="selectCookie(this, 'brave')">
             선택하기
           </button>
         </div>
@@ -39,7 +39,7 @@
             width="340px"
             height="400px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'boarder')">
+          <button class="select_c_btn" onclick="selectCookie(this, 'boarder')">
             선택하기
           </button>
         </div>
@@ -51,7 +51,7 @@
             width="340px"
             height="400px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'zombie')">
+          <button class="select_c_btn" onclick="selectCookie(this, 'zombie')">
             선택하기
           </button>
         </div>
@@ -65,12 +65,12 @@
         <div class="select-card">
           <p>마녀의 오븐</p>
           <img
-            src="../images/cookies/brave.png"
-            alt="용감한 쿠키"
-            width="315px"
-            height="400px"
+            src="../images/background/oven0fWitch.png"
+            alt="마녀의 오븐"
+            width="340px"
+            height="270px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'brave')">
+          <button class="select_s_btn" onclick="selectStage(this,'1')">
             선택하기
           </button>
         </div>
@@ -78,46 +78,40 @@
         <div class="select-card">
           <p>해바라기 숲</p>
           <img
-            src="../images/cookies/boarder.png"
-            alt="보더맛 쿠키"
+            src="../images/background/sunflower.png"
+            alt="해바라기 숲"
             width="340px"
-            height="400px"
+            height="270px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'boarder')">
+          <button class="select_s_btn" onclick="selectStage(this,'2')">
             선택하기
           </button>
         </div>
         <div class="select-card">
           <p>낮 바다</p>
           <img
-            src="../images/cookies/zombie.png"
-            alt="좀비맛 쿠키"
+            src="../images/background/sea.png"
+            alt="낮 바다"
             width="340px"
-            height="400px"
+            height="270px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'zombie')">
+          <button class="select_s_btn" onclick="selectStage(this,'3')">
             선택하기
           </button>
         </div>
         <div class="select-card">
-          <p>보너스 스테이지</p>
+          <p>보너스 타임</p>
           <img
-            src="../images/cookies/zombie.png"
-            alt="좀비맛 쿠키"
+            src="../images/background/bonus.png"
+            alt="보너스 타임"
             width="340px"
-            height="400px"
+            height="270px"
           />
-          <button class="select_btn" onclick="selectCookie(this, 'zombie')">
+          <button class="select_s_btn" onclick="selectStage(this,'bonus')">
             선택하기
           </button>
         </div>
       </div>
-      <!-- <div class="stage-list">
-        <button onclick="selectStage('1')">마녀의 오븐</button>
-        <button onclick="selectStage('2')">해바라기 숲</button>
-        <button onclick="selectStage('3')">낮 바다</button>
-        <button onclick="selectStage('bonus')">보너스 스테이지</button>
-      </div> -->
     </div>
 
     <div id="buttonDiv">
