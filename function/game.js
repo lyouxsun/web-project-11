@@ -138,7 +138,7 @@ function gameLoop() {
 
 // 쿠키 이미지 동적 설정
 const selectedCookie = localStorage.getItem("cookie") || "brave";
-playerImage.src = `../images/${selectedCookie}.png`;
+playerImage.src = `../images/cookies/${selectedCookie}.png`;
 
 // 초기 속도 설정
 let playerSpeed = getCurrentSpeed();  // ← cookie.js에서 불러옴 (이유신)

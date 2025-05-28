@@ -14,7 +14,7 @@ function startGame() {
 
   // switch (selectedStage) {
   // case "1":
-  window.location.href = "/stage/stage.html";
+  window.location.href = "../stage/stage.html";
   // break;
   // case "2":
   //   window.location.href = "/stage2/stage2.html";
@@ -33,5 +33,5 @@ function startGame() {
 function selectCookies() {
   const selectedStage = document.getElementById("stageSelect").value;
 
-  window.location.href = "/select/select.html";
+  window.location.href = "../select/select.html";
 }

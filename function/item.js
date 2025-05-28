@@ -1,6 +1,6 @@
 // item.js ==> game.js에 아직 반영x (어떻게 게임에 반영할 지 정할 필요요)
 
-let speedBoostActive = false;
+// let speedBoostActive = false;
 
 // 🔹 [1] 속도 증가 아이템
 function activateSpeedBoost(callback) {
