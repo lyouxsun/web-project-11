@@ -15,9 +15,22 @@ function showTab(tabName) {
     tabName === "stage" ? "block" : "none";
 }
 
-function selectCookie(cookieName) {
+function selectCookie(button, cookieName) {
+  // 모든 버튼 초기화
+  const allButtons = document.querySelectorAll(".select_btn");
+  allButtons.forEach((btn) => {
+    btn.textContent = "선택하기";
+    btn.disabled = false;
+    btn.classList.remove("selected");
+  });
+
+  // 선택한 버튼 스타일 변경
+  button.textContent = "선택됨";
+  button.disabled = true;
+  button.classList.add("selected");
+
+  // 선택된 쿠키 저장
   localStorage.setItem("selectedCookie", cookieName);
-  alert(`${cookieName} 쿠키를 선택하셨습니다!`);
 }
 
 function selectStage(stageId) {
