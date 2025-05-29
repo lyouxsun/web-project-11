@@ -17,13 +17,13 @@ body {
 
 #gameCanvas {
   display: block;
-  margin: 0 auto;
+  margin: 0px auto;
   background-color: #87cefa;
   border: 3px solid #333;
 }
 
 #scoreBoard {
-  position: absolute;
+  /* position: absolute; */
   top: 10px;
   left: 10px;
   font-size: 18px;
@@ -34,4 +34,34 @@ body {
   z-index: 10;
   line-height: 1.6;
   margin: 10px;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.normal_btn {
+  background: linear-gradient(145deg, #ffb347, #ffcc33);
+  color: white;
+  font-family: "CookieRun-Regular", sans-serif;
+  font-size: 1.5rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.normal_btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+.normal_btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
