@@ -47,7 +47,7 @@ backgroundImage.src = `../images/background/${
 
 // 블록 이미지 로딩
 const redBlockImage = new Image();
-redBlockImage.src = "../images/obstacles/obstacles1.png"; // 장애물 이미지 경로
+redBlockImage.src = "../images/obstacles/obstacles2.png"; // 장애물 이미지 경로
 
 const blueBlockImage = new Image();
 blueBlockImage.src = "../images/jelly/jelly1.png"; // 아이템 이미지 경로
