@@ -31,7 +31,5 @@ function startGame() {
 }
 
 function selectCookies() {
-  const selectedStage = document.getElementById("stageSelect").value;
-
   window.location.href = "/select/select.html";
 }
