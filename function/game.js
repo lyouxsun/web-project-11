@@ -45,6 +45,13 @@ backgroundImage.src = `../images/background/${
     : "bonus.png"
 }`;
 
+// 블록 이미지 로딩
+const redBlockImage = new Image();
+redBlockImage.src = "../images/obstacles/obstacles1.png"; // 장애물 이미지 경로
+
+const blueBlockImage = new Image();
+blueBlockImage.src = "../images/jelly/jelly1.png"; // 아이템 이미지 경로
+
 // 블록 생성 시 움직이지 않도록 dy 제거
 function spawnBlocks() {
   if (Math.random() < 0.03) {
@@ -118,13 +125,11 @@ function draw() {
   animatePlayer();
 
   for (const o of redBlocks) {
-    ctx.fillStyle = "red";
-    ctx.fillRect(o.x, o.y, o.width, o.height);
+    ctx.drawImage(redBlockImage, o.x, o.y, o.width, o.height); // 장애물 이미지
   }
 
   for (const b of blueBlocks) {
-    ctx.fillStyle = "blue";
-    ctx.fillRect(b.x, b.y, b.width, b.height);
+    ctx.drawImage(blueBlockImage, b.x, b.y, b.width, b.height); // 아이템 이미지
   }
 }
 
