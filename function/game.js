@@ -33,7 +33,6 @@ const player = {
 };
 
 // 스테이지 이미지 선택
-// 선택한 배경 불러오기
 const selectedStage = localStorage.getItem("selectedStage") || "1";
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
@@ -78,7 +77,7 @@ function update() {
       hp--;
       if (hp <= 0) {
         if (canRevive()) {
-          const revive = useRevive(); // 좀비맛 쿠키 부활 반영영
+          const revive = useRevive(); // 좀비맛 쿠키 부활 반영
           hp = revive.hpRestored;
           alert(revive.message);
         } else {
@@ -171,7 +170,7 @@ function animatePlayer() {
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
 document.addEventListener("keydown", (e) => {
-  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영영
+  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영
 
   if (e.key === "ArrowUp") {
     player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
@@ -182,4 +181,24 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
+
+  //다시 시작 버튼
+  const restartBtn = document.getElementById("restartBtn");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", () => {
+      running = false; // 게임 중단
+      alert("3초 후 게임이 다시 시작됩니다!");
+      setTimeout(() => {
+        startGame();
+      }, 3000);
+    });
+  }
+
+  //선택화면으로 돌아가기
+  const backBtn = document.getElementById("backBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.location.href = "../select/select.html";
+    });
+  }
 });
