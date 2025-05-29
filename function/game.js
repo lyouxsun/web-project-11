@@ -76,11 +76,17 @@ function update() {
       player.y + player.height > o.y
     ) {
       hp--;
-      redBlocks.splice(i, 1);
       if (hp <= 0) {
-        running = false;
-        alert("게임 오버!");
+        if (canRevive()) {
+          const revive = useRevive(); // 좀비맛 쿠키 부활 반영영
+          hp = revive.hpRestored;
+          alert(revive.message);
+        } else {
+          running = false;
+          alert("게임 오버!");
+        }
       }
+      redBlocks.splice(i, 1);
     }
   });
 
@@ -147,6 +153,13 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
+// 쿠키 이미지 동적 설정
+const selectedCookie = localStorage.getItem("cookie") || "brave";
+playerImage.src = `../images/${selectedCookie}.png`;
+
+// 초기 속도 설정
+let playerSpeed = getCurrentSpeed();  // ← cookie.js에서 불러옴 (이유신)
+
 function startGame() {
   score = 0;
   hp = 3;
@@ -162,12 +175,15 @@ function animatePlayer() {
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
 document.addEventListener("keydown", (e) => {
+  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영영
+
   if (e.key === "ArrowUp") {
-    player.y = Math.max(player.y - 20, 0); // 위로 이동 (최소 0)
+    player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
   } else if (e.key === "ArrowDown") {
-    player.y = Math.min(player.y + 20, canvas.height - player.height); // 아래로 이동 (최대 캔버스 경계)
+    player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
   }
 });
+
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
