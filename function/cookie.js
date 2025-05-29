@@ -4,17 +4,14 @@ let revivedOnce = false;
 
 // 기본 쿠키 속도
 const baseSpeedMap = {
-  brave: 5,
-  boarder: 7,
-  zombie: 4,
+  brave: 10,
+  boarder: 14,
+  zombie: 10,
 };
-
-// 선택된 쿠키
-const selectedCookie = localStorage.getItem("cookie") || "brave";
 
 // 현재 쿠키의 기본 속도 반환
 function getBaseSpeed() {
-  return baseSpeedMap[selectedCookie] || 5;
+  return baseSpeedMap[selectedCookie] || 10;
 }
 
 // 시간 경과에 따른 추가 속도 계산
@@ -25,9 +22,10 @@ function getTimeBoost() {
 
 // 최종 이동 속도 반환
 function getCurrentSpeed() {
-  const baseSpeed = getBaseSpeed();
-  const boost = getTimeBoost();
-  return baseSpeed + boost;
+  const selectedCookie = localStorage.getItem("selectedCookie");
+  if (selectedCookie === "zombie") return 10;
+  if (selectedCookie === "boarder") return 14;
+  return 4; // brave 기본 속도
 }
 
 // 보더맛 쿠키 - 빠름 (이미 base 속도에서 반영되어 있음)
@@ -41,6 +39,6 @@ function useRevive() {
   revivedOnce = true;
   return {
     hpRestored: 1,
-    message: "좀비맛 쿠키가 부활했습니다!"
+    message: "좀비맛 쿠키가 부활했습니다!",
   };
 }

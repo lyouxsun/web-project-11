@@ -153,12 +153,8 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-// 쿠키 이미지 동적 설정
-const selectedCookie = localStorage.getItem("cookie") || "brave";
-playerImage.src = `../images/${selectedCookie}.png`;
-
 // 초기 속도 설정
-let playerSpeed = getCurrentSpeed();  // ← cookie.js에서 불러옴 (이유신)
+let playerSpeed = getCurrentSpeed(); // ← cookie.js에서 불러옴 (이유신)
 
 function startGame() {
   score = 0;
@@ -183,7 +179,6 @@ document.addEventListener("keydown", (e) => {
     player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
   }
 });
-
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
