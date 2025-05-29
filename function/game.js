@@ -18,17 +18,33 @@ let step = 0;
 let redBlocks = [];
 let blueBlocks = [];
 
-// 플레이어 정보
+// 쿠키 이미지 선택
+const selectedCookie = localStorage.getItem("selectedCookie") || "brave";
+
 const playerImage = new Image();
-playerImage.src = "../images/brave.png";
+playerImage.src = `../images/cookies/${selectedCookie}.png`;
 
 const player = {
   x: 50,
   y: 200,
-  width: 40,
-  height: 40,
-  image: playerImage
+  width: 50,
+  height: 60,
+  image: playerImage,
 };
+
+// 스테이지 이미지 선택
+// 선택한 배경 불러오기
+const selectedStage = localStorage.getItem("selectedStage") || "1";
+const backgroundImage = new Image();
+backgroundImage.src = `../images/background/${
+  selectedStage === "1"
+    ? "oven0fWitch.png"
+    : selectedStage === "2"
+    ? "sunflower.png"
+    : selectedStage === "3"
+    ? "sea.png"
+    : "bonus.png"
+}`;
 
 // 블록 생성 시 움직이지 않도록 dy 제거
 function spawnBlocks() {
@@ -96,8 +112,9 @@ function update() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#87CEFA";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // 배경 이미지로 채우기
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
   animatePlayer();
 
@@ -108,7 +125,7 @@ function draw() {
 
   for (const b of blueBlocks) {
     ctx.fillStyle = "blue";
-    ctx.fillRect(b.x, b.y, b.width, b.height); // 네모로 그림
+    ctx.fillRect(b.x, b.y, b.width, b.height);
   }
 }
 
@@ -154,7 +171,7 @@ function startGame() {
   gameLoop();
 }
 function animatePlayer() {
-  // 부드러운 흔들림 없이 그냥 현재 위치에 그리기  
+  // 부드러운 흔들림 없이 그냥 현재 위치에 그리기
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
 document.addEventListener("keydown", (e) => {
@@ -169,5 +186,5 @@ document.addEventListener("keydown", (e) => {
 
 
 window.addEventListener("DOMContentLoaded", () => {
-  startGame(); 
+  startGame();
 });
