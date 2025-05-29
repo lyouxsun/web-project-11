@@ -47,10 +47,10 @@ body {
   background: linear-gradient(145deg, #ffb347, #ffcc33);
   color: white;
   font-family: "CookieRun-Regular", sans-serif;
-  font-size: 1.5rem;
-  padding: 15px 30px;
+  padding: 10px 20px;
+  font-size: 18px;
   border: none;
-  border-radius: 30px;
+  border-radius: 8px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -64,4 +64,9 @@ body {
 .normal_btn:active {
   transform: translateY(0);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+#btnDiv {
+  display: flex;
+  gap: 20px;
 }
