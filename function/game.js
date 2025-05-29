@@ -18,15 +18,16 @@ let step = 0;
 let redBlocks = [];
 let blueBlocks = [];
 
-// 플레이어 정보
+const selectedCookie = localStorage.getItem("selectedCookie") || "brave";
+
 const playerImage = new Image();
-playerImage.src = "../images/cookies/brave.png";
+playerImage.src = `../images/cookies/${selectedCookie}.png`;
 
 const player = {
   x: 50,
   y: 200,
-  width: 40,
-  height: 40,
+  width: 50,
+  height: 60,
   image: playerImage,
 };
 
