@@ -19,6 +19,7 @@ let hp = 3;
 let timeLeft = 180;
 let running = false;
 let step = 0;
+let speed;
 let dy = 0;
 let isJumping = false; // 상승 중인가
 let isOnAir = false; // 떠있는가
@@ -110,9 +111,12 @@ function spawnBlocks(timestamp) {
 }
 
 function update() {
+  // 속도 갱신
+  speed = getSpeed();
+
   // 장애물 이동 및 충돌
   obstacles.forEach((o, i) => {
-    o.x -= o.speed;
+    o.x -= speed;
     if (
       player.x < o.x + o.width &&
       player.x + player.width > o.x &&
@@ -136,7 +140,7 @@ function update() {
 
   // update에서 y 이동 삭제
   bricks.forEach((b, i) => {
-    b.x -= b.speed;
+    b.x -= speed;
     if (
       player.x < b.x + b.width &&
       player.x + player.width > b.x &&
@@ -144,13 +148,13 @@ function update() {
       player.y + player.height > b.y
     ) {
       score++;
-      if (score > highScore) highScore = score;
+      // if (score > highScore) highScore = score;
       bricks.splice(i, 1);
     }
   });
 
   items.forEach((t, i) => {
-    t.x -= t.speed;
+    t.x -= speed;
     if (
       player.x < t.x + t.width &&
       player.x + player.width > t.x &&
@@ -158,19 +162,22 @@ function update() {
       player.y + player.height > t.y
     ) {
       let r = Math.random() * 3;
-      // if (r > 2) {
-      //   console.log("속도 증가");
-      //   // activateSpeedBoost();
-      // } else if (r > 1) {
-      //   console.log("HP 회복");
-      //   restoreHP();
-      // } else {
-      //   console.log("보너스 점수");
-      //   bonusScore();
-      // }
+      if (r > 2) {
+        console.log("속도 증가");
+        activateSpeedBoost();
+      } else if (r > 1) {
+        console.log("HP 회복");
+        restoreHP();
+      } else {
+        console.log("보너스 점수");
+        bonusScore();
+      }
       items.splice(i, 1);
     }
   });
+  
+  // 최고 점수 갱신
+  if (score > highScore) highScore = score;
 
   // 화면 밖 제거
   obstacles = obstacles.filter((o) => o.x + o.width > 0);
@@ -240,7 +247,7 @@ function gameLoop(timestamp) {
 }
 
 // 초기 속도 설정
-let playerSpeed = getCurrentSpeed(); // ← cookie.js에서 불러옴 (이유신)
+// let playerSpeed = getCurrentSpeed(); // ← cookie.js에서 불러옴 (이유신)
 
 function startGame() {
   score = 0;
@@ -258,7 +265,7 @@ function animatePlayer() {
   ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
 }
 document.addEventListener("keydown", (e) => {
-  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영
+  // playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영
 
   if (e.key === "ArrowUp") {
     // player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
