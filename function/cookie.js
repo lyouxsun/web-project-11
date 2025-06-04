@@ -1,53 +1,39 @@
 let startTime = Date.now();
-let speedBoostActive = false;
-let revivedOnce = false;
+let abilityUsed = false;
 
-// 기본 쿠키 속도
-const baseSpeedMap = {
-  brave: 10,
-  boarder: 14,
-  zombie: 10,
-};
+function cssAbility() {
+  if (abilityUsed) return;  // 이미 사용했으면 리턴
+  abilityUsed = true;       // 사용했음을 기록
+  alert("K키를 누르면 display:none");
 
-// 현재 쿠키의 기본 속도 반환
-function getBaseSpeed() {
-  return baseSpeedMap[selectedCookie];
-}
+  // 사용 가능한 벽돌 수집
+  const availableBricks = [];
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      if (bricks[c][r].status === 1) {
+        availableBricks.push({ c, r });
+      }
+    }
+  }
 
-// 시간 경과에 따른 추가 속도 계산
-// function getTimeBoost() {
-//   const secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
-//   return Math.floor(secondsElapsed / 30); // 30초마다 +1
-// }
-
-// 최종 이동 속도 반환
-// function getCurrentSpeed() {
-//   const selectedCookie = localStorage.getItem("selectedCookie");
-//   if (selectedCookie === "zombie") return 10;
-//   if (selectedCookie === "boarder") return 14;
-//   return 4; // brave 기본 속도
-// }
-
-// 현재 속도 반환
-function getSpeed() {
-  if (speedBoostActive) {
-    return (getBaseSpeed() + 10) / 10;
-  } else {
-    return (getBaseSpeed() + 5) / 10;
+  // 최대 3개의 벽돌 제거
+  for (let i = 0; i < 3 && availableBricks.length > 0; i++) {
+    const index = Math.floor(Math.random() * availableBricks.length);
+    const { c, r } = availableBricks.splice(index, 1)[0];
+    bricks[c][r].status = 0;
   }
 }
 
-// 보더맛 쿠키 - 빠름 (이미 base 속도에서 반영되어 있음)
-
-// 좀비맛 쿠키 - 1회 부활 가능
-function canRevive() {
-  return selectedCookie === "zombie" && !revivedOnce;
-}
-
-function useRevive() {
-  revivedOnce = true;
-  return {
-    hpRestored: 1,
-    message: "좀비맛 쿠키가 부활했습니다!",
+function jsAbility() {
+  console.log("js ability");
+  if (abilityUsed) return;
+  abilityUsed = true;
+  let newBall = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: initialBallSpeed * (Math.random() > 0.5 ? 1 : -1),
+    dy: -initialBallSpeed,
+    radius: 50,
   };
+  balls.push(newBall);
 }
