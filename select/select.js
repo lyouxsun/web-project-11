@@ -50,3 +50,31 @@ function selectStage(button, stageId) {
   // 선택된 스테이지 저장
   localStorage.setItem("selectedStage", stageId);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const infoIcons = document.querySelectorAll(".info-icon");
+
+  infoIcons.forEach((icon) => {
+    icon.addEventListener("click", (e) => {
+      const cookieKey = icon.dataset.cookie;
+      const tooltip = document.getElementById(`tooltip-${cookieKey}`);
+
+      // 모든 tooltip 숨기기
+      document.querySelectorAll(".tooltip").forEach((t) => {
+        if (t !== tooltip) t.classList.remove("show");
+      });
+
+      // 토글 방식
+      tooltip.classList.toggle("show");
+    });
+  });
+
+  // 툴팁 외부 클릭 시 닫기
+  document.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("info-icon")) {
+      document
+        .querySelectorAll(".tooltip")
+        .forEach((t) => t.classList.remove("show"));
+    }
+  });
+});
