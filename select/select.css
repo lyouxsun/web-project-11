@@ -131,3 +131,39 @@ div p {
   transform: translateY(0);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
+
+.tooltip {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  max-width: 220px; /* ✅ 너비 제한 (줄바꿈 유도) */
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 16px; /* ✅ 글씨 더 큼 */
+  line-height: 1.5; /* ✅ 줄간격 여유 */
+  white-space: normal; /* ✅ 줄바꿈 허용 */
+  display: none;
+  z-index: 999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* ✅ 살짝 입체감 */
+}
+
+.tooltip.show {
+  display: block;
+}
+
+.info-container {
+  position: relative;
+  text-align: center;
+  height: 50px; /* 텍스트 영역만 높이 확보 */
+}
+
+.info-icon {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
