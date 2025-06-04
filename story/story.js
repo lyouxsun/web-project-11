@@ -55,9 +55,23 @@ function typeLine() {
       lineIndex = 0;
       setTimeout(() => {
         storyText.innerHTML = "";
+
         if (paragraphIndex < bgSources.length) {
-          bgImg.src = bgSources[paragraphIndex];
+          // ✅ 배경 이미지 페이드 아웃
+          bgImg.style.transition = "opacity 1s ease-in-out"; // 페이드 아웃과 페이드 인 시간 설정
+          bgImg.style.opacity = 0; // 페이드 아웃 시작
+
+          setTimeout(() => {
+            // 새로운 이미지 로드
+            bgImg.src = bgSources[paragraphIndex];
+
+            // 새로운 이미지가 로드된 후 페이드 인
+            bgImg.onload = () => {
+              bgImg.style.opacity = 1; // 이미지 로드 후 opacity를 1로 변경
+            };
+          }, 1000); // 1초 대기 후 이미지 변경
         }
+
         setTimeout(typeLine, 500); // 다음 단락 시작
       }, 1200); // 단락 끝난 후 1.2초 쉬고 비우기
     }
@@ -65,7 +79,9 @@ function typeLine() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  bgImg.src = bgSources[0];
+  bgImg.src = bgSources[0]; // 첫 번째 배경 이미지 설정
+  bgImg.style.opacity = 1; // 처음에 이미지는 보이도록 설정
+  bgImg.style.transition = "opacity 0.5s ease-in-out"; // 페이드 효과 설정
   setTimeout(() => {
     typeLine();
   }, 500);
