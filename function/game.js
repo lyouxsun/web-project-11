@@ -177,7 +177,7 @@ function update() {
         alert(`다음 스테이지(${currentStage + 1})로 이동합니다!`);
         window.location.reload();
       } else {
-        alert("🎉 모든 스테이지를 클리어했습니다!");
+        alert("🎉 바깥 세상으로 탈출에 성공했습니다!");
         window.location.href = "../select/select.html";
       }
     }, 200);
