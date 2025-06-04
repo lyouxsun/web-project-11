@@ -9,8 +9,6 @@ const highScoreEl = document.getElementById("highScore");
 const brickImage = new Image();
 const ballImage = new Image();
 
-ballImage.src = "../images/ball.png";
-brickImage.src = "../images/brick.png";
 
 let score = 0;
 let highScore = 0;
@@ -18,6 +16,8 @@ let running = false;
 
 const selectedStage = localStorage.getItem("selectedStage") || "1";
 const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
+ballImage.src = `../images/cookies/${selectedCookie}.png`; // 선택된 쿠키가 공 이미지 역할
+brickImage.src = "../images/brick.png";
 
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
@@ -31,31 +31,32 @@ backgroundImage.src = `../images/background/${
 }`;
 
 const playerImage = new Image();
-playerImage.src = `../images/cookies/${selectedCookie}.png`;
+playerImage.src = `../images/bar.png`;
 
-let cookieSpeed = 30;
-if (selectedCookie === "HTML_Cookie") cookieSpeed = 40;
-else if (selectedCookie === "CSS_Cookie") cookieSpeed = 25;
-else if (selectedCookie === "JS_Cookie") cookieSpeed = 35;
-
-const player = {
-  x: canvas.width / 2 - 50,
-  y: canvas.height - 100,
-  width: 80,
-  height: 100,
-  speed: cookieSpeed,
-};
+let playerSpeed = 30;
+if (selectedCookie === "HTML_Cookie") playerSpeed = 40;
+else if (selectedCookie === "CSS_Cookie") playerSpeed = 25;
+else if (selectedCookie === "JS_Cookie") playerSpeed = 35;
 
 const initialBallSpeed =
-  selectedStage === "2" ? 3 : selectedStage === "3" ? 4 : 2;
+  selectedStage === "2" ? 5 : selectedStage === "3" ? 7 : 4;
 
 const ball = {
   x: canvas.width / 2,
   y: canvas.height - 120,
   dx: initialBallSpeed,
   dy: -initialBallSpeed,
-  radius: 25, // 예: 8 → 16으로 키움
+  radius: 50, 
 };
+
+const player = {
+  x: canvas.width / 2 - 100,
+  y: canvas.height - 100,
+  width: 300,         // 길쭉하게
+  height: 100,        // 기존 그대로
+  speed: playerSpeed,
+};
+
 
 let brickRowCount = 2;
 let brickColumnCount = 2;
@@ -68,10 +69,10 @@ if (selectedStage === "2") {
   brickColumnCount = 5;
 }
 
-const brickWidth = 80;
-const brickHeight = 80;
+const brickWidth = 100;
+const brickHeight = 100;
 const brickPadding = 0;
-const brickOffsetTop = 30;
+const brickOffsetTop = 100;
 
 function calculateBrickOffsetLeft() {
   const totalWidth =
@@ -240,6 +241,14 @@ document.addEventListener("keydown", (e) => {
     player.x = Math.max(0, player.x - player.speed);
   } else if (e.key === "ArrowRight") {
     player.x = Math.min(canvas.width - player.width, player.x + player.speed);
+  } else if (e.key === "k" || e.key === "K") {
+    console.log("cookie=", selectedCookie);
+    if (selectedCookie === "CSS_Cookie_Ball") {
+      cssAbility();
+    }
+    else if (selectedCookie == "JS_Cookie_Ball") {
+      jsAbility();
+    }
   }
 });
 
