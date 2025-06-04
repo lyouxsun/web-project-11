@@ -102,14 +102,16 @@ function drawPlayer() {
   ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 }
 
-function drawBall() {
-  ctx.drawImage(
-    ballImage,
-    ball.x - ball.radius,
-    ball.y - ball.radius,
-    ball.radius * 2,
-    ball.radius * 2
-  );
+function drawBalls() {
+  balls.forEach((b) => {
+    ctx.drawImage(
+      ballImage,
+      b.x - b.radius,
+      b.y - b.radius,
+      b.radius * 2,
+      b.radius * 2
+    );
+  });
 }
 
 function drawBricks() {
@@ -127,51 +129,58 @@ function drawBricks() {
 }
 
 function collisionDetection() {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      const b = bricks[c][r];
-      if (b.status === 1) {
-        if (
-          ball.x > b.x &&
-          ball.x < b.x + brickWidth &&
-          ball.y > b.y &&
-          ball.y < b.y + brickHeight
-        ) {
-          ball.dy = -Math.sign(ball.dy) * initialBallSpeed;
-          b.status = 0;
-          score++;
-          if (score > highScore) highScore = score;
+  balls.forEach((b) => {
+    for (let c = 0; c < brickColumnCount; c++) {
+      for (let r = 0; r < brickRowCount; r++) {
+        const brick = bricks[c][r];
+        if (brick.status === 1) {
+          if (
+            b.x > brick.x &&
+            b.x < brick.x + brickWidth &&
+            b.y > brick.y &&
+            b.y < brick.y + brickHeight
+          ) {
+            b.dy = -Math.sign(b.dy) * initialBallSpeed;
+            brick.status = 0;
+            score++;
+            if (score > highScore) highScore = score;
+          }
         }
       }
     }
-  }
+  });
 }
 
 function update() {
-  ball.x += ball.dx;
-  ball.y += ball.dy;
+  balls.forEach((b) => {
+    b.x += b.dx;
+    b.y += b.dy;
 
-  // 벽 충돌
-  if (
-    ball.x + ball.dx > canvas.width - ball.radius ||
-    ball.x + ball.dx < ball.radius
-  ) {
-    ball.dx = -Math.sign(ball.dx) * initialBallSpeed;
-  }
+    // 벽 충돌
+    if (b.x + b.dx > canvas.width - b.radius || b.x + b.dx < b.radius) {
+      b.dx = -Math.sign(b.dx) * initialBallSpeed;
+    }
 
-  if (ball.y + ball.dy < ball.radius) {
-    ball.dy = -Math.sign(ball.dy) * initialBallSpeed;
-  } else if (
-    ball.y + ball.dy > player.y &&
-    ball.x > player.x &&
-    ball.x < player.x + player.width
-  ) {
-    const collidePoint = ball.x - (player.x + player.width / 2);
-    const normalizedPoint = collidePoint / (player.width / 2);
-    const angle = (normalizedPoint * Math.PI) / 3;
-    ball.dx = initialBallSpeed * Math.sin(angle);
-    ball.dy = -initialBallSpeed * Math.cos(angle);
-  } else if (ball.y + ball.dy > canvas.height) {
+    if (b.y + b.dy < b.radius) {
+      b.dy = -Math.sign(b.dy) * initialBallSpeed;
+    } else if (
+      b.y + b.dy > player.y &&
+      b.x > player.x &&
+      b.x < player.x + player.width
+    ) {
+      const collidePoint = b.x - (player.x + player.width / 2);
+      const normalizedPoint = collidePoint / (player.width / 2);
+      const angle = (normalizedPoint * Math.PI) / 3;
+      b.dx = initialBallSpeed * Math.sin(angle);
+      b.dy = -initialBallSpeed * Math.cos(angle);
+    } else if (b.y + b.dy > canvas.height) {
+      // 공이 아래로 떨어진 경우 해당 공만 제거
+      balls = balls.filter(ball => ball !== b);
+    }
+  });
+
+  // 공이 하나도 없으면 게임 오버
+  if (balls.length === 0) {
     running = false;
     alert("게임 오버!");
     document.location.reload();
@@ -184,18 +193,14 @@ function update() {
   if (allBricksCleared()) {
     running = false;
     draw();
-
     setTimeout(() => {
       alert(`🎉 클리어!\n점수: ${score}`);
-
       const currentStage = parseInt(selectedStage, 10);
       if (currentStage < 3) {
-        // 다음 스테이지로 이동
         localStorage.setItem("selectedStage", (currentStage + 1).toString());
         alert(`다음 스테이지(${currentStage + 1})로 이동합니다!`);
         window.location.reload();
       } else {
-        // 마지막 스테이지 클리어
         alert("🎉 모든 스테이지를 클리어했습니다!");
         window.location.href = "../select/select.html";
       }
@@ -207,7 +212,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
   drawBricks();
-  drawBall();
+  drawBalls();
   drawPlayer();
 }
 
@@ -219,6 +224,8 @@ function gameLoop() {
 }
 
 function startGame() {
+  abilityUsed = false;
+  
   score = 0;
   running = true;
   ball.x = canvas.width / 2;
@@ -226,6 +233,9 @@ function startGame() {
   ball.dx = initialBallSpeed;
   ball.dy = -initialBallSpeed;
   player.x = canvas.width / 2 - 50;
+
+  balls = [ball];
+
 
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
@@ -241,7 +251,7 @@ document.addEventListener("keydown", (e) => {
     player.x = Math.max(0, player.x - player.speed);
   } else if (e.key === "ArrowRight") {
     player.x = Math.min(canvas.width - player.width, player.x + player.speed);
-  } else if (e.key === "k" || e.key === "K") {
+  } else if (e.key === "k" || e.key === "K" || e.key === "ㅏ") {
     console.log("cookie=", selectedCookie);
     if (selectedCookie === "CSS_Cookie_Ball") {
       cssAbility();
