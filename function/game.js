@@ -9,7 +9,6 @@ const highScoreEl = document.getElementById("highScore");
 const brickImage = new Image();
 const ballImage = new Image();
 
-ballImage.src = "../images/ball.png";
 brickImage.src = "../images/brick.png";
 
 let score = 0;
@@ -17,7 +16,8 @@ let highScore = 0;
 let running = false;
 
 const selectedStage = localStorage.getItem("selectedStage") || "1";
-const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
+const selectedCookie =
+  localStorage.getItem("selectedCookie") || "HTML_Cookie_Ball";
 
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
@@ -31,7 +31,9 @@ backgroundImage.src = `../images/background/${
 }`;
 
 const playerImage = new Image();
-playerImage.src = `../images/cookies/${selectedCookie}.png`;
+// playerImage.src = `../images/cookies/${selectedCookie}.png`;
+playerImage.src = `../images/Bar.png`;
+ballImage.src = `../images/cookies/${selectedCookie}.png`;
 
 let cookieSpeed = 30;
 if (selectedCookie === "HTML_Cookie") cookieSpeed = 40;
