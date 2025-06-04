@@ -7,6 +7,24 @@ body {
   overflow: hidden;
 }
 
+#resultBox {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  font-family: 'CookieRun', sans-serif;
+}
+
+#resultBox button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.hidden {
+  display: none;
+}
+
 /* 기본 배경 설정은 JS에서 처리하므로 생략 */
 .red-block {
   background-color: red;
