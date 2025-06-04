@@ -1,0 +1,83 @@
+/* 전체 페이지 기본 세팅 */
+@font-face {
+  font-family: "CookieRun-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "CookieRun-Regular", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: antiquewhite;
+}
+
+/* 스토리 배경 컨테이너 */
+#story-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 배경 이미지 (중앙 고정 + 살짝 축소) */
+#bg-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%; /* 화면보다 살짝 작게 */
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+/* 텍스트 박스 (배경 위에 올라감) */
+#story-container {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 80%;
+  color: white;
+  font-size: 30px;
+  line-height: 1.8;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+/* SKIP 버튼 */
+#skip-btn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+#skip-btn:hover {
+  background: white;
+  color: black;
+}

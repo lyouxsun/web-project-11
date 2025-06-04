@@ -52,7 +52,7 @@ const ball = {
 const player = {
   x: canvas.width / 2 - 100,
   y: canvas.height - 100,
-  width: 400, 
+  width: 400,
   height: 100,
   speed: playerSpeed,
 };
