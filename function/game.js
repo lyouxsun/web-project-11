@@ -46,17 +46,16 @@ const ball = {
   y: canvas.height - 120,
   dx: initialBallSpeed,
   dy: -initialBallSpeed,
-  radius: 50, 
+  radius: 50,
 };
 
 const player = {
   x: canvas.width / 2 - 100,
   y: canvas.height - 100,
-  width: 300,         // 길쭉하게
-  height: 100,        // 기존 그대로
+  width: 400, 
+  height: 100,
   speed: playerSpeed,
 };
-
 
 let brickRowCount = 2;
 let brickColumnCount = 2;
@@ -72,7 +71,7 @@ if (selectedStage === "2") {
 const brickWidth = 100;
 const brickHeight = 100;
 const brickPadding = 0;
-const brickOffsetTop = 100;
+const brickOffsetTop = 70;
 
 function calculateBrickOffsetLeft() {
   const totalWidth =
@@ -128,29 +127,6 @@ function drawBricks() {
   }
 }
 
-function collisionDetection() {
-  balls.forEach((b) => {
-    for (let c = 0; c < brickColumnCount; c++) {
-      for (let r = 0; r < brickRowCount; r++) {
-        const brick = bricks[c][r];
-        if (brick.status === 1) {
-          if (
-            b.x > brick.x &&
-            b.x < brick.x + brickWidth &&
-            b.y > brick.y &&
-            b.y < brick.y + brickHeight
-          ) {
-            b.dy = -Math.sign(b.dy) * initialBallSpeed;
-            brick.status = 0;
-            score++;
-            if (score > highScore) highScore = score;
-          }
-        }
-      }
-    }
-  });
-}
-
 function update() {
   balls.forEach((b) => {
     b.x += b.dx;
@@ -175,7 +151,7 @@ function update() {
       b.dy = -initialBallSpeed * Math.cos(angle);
     } else if (b.y + b.dy > canvas.height) {
       // 공이 아래로 떨어진 경우 해당 공만 제거
-      balls = balls.filter(ball => ball !== b);
+      balls = balls.filter((ball) => ball !== b);
     }
   });
 
@@ -206,6 +182,24 @@ function update() {
       }
     }, 200);
   }
+
+  items = items.filter((item) => {
+    const elapsed = Date.now() - item.createdAt;
+
+    if (!item.activated && elapsed >= 0) {
+      item.activated = true;
+      if (item.type === "speed" && !speedBoostActive) {
+        alert("🚀 속도 증가 아이템 발동!");
+        activateSpeedBoost();
+      } else if (item.type === "big" && !bigBallActive) {
+        alert("🔵 공 커짐 아이템 발동!");
+        activateBigBall();
+      }
+    }
+
+    // 3초 지나면 제거
+    return elapsed < 3000;
+  });
 }
 
 function draw() {
@@ -214,6 +208,9 @@ function draw() {
   drawBricks();
   drawBalls();
   drawPlayer();
+  items.forEach((item) => {
+    ctx.drawImage(itemImages[item.type], item.x, item.y, ITEM_SIZE, ITEM_SIZE);
+  });
 }
 
 function gameLoop() {
@@ -225,7 +222,7 @@ function gameLoop() {
 
 function startGame() {
   abilityUsed = false;
-  
+
   score = 0;
   running = true;
   ball.x = canvas.width / 2;
@@ -235,7 +232,6 @@ function startGame() {
   player.x = canvas.width / 2 - 50;
 
   balls = [ball];
-
 
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
@@ -255,12 +251,11 @@ document.addEventListener("keydown", (e) => {
     console.log("cookie=", selectedCookie);
     if (selectedCookie === "CSS_Cookie_Ball") {
       cssAbility();
-    }
-    else if (selectedCookie == "JS_Cookie_Ball") {
+    } else if (selectedCookie == "JS_Cookie_Ball") {
       jsAbility();
     }
   }
-})
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
