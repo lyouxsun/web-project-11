@@ -16,7 +16,7 @@ let running = false;
 
 const selectedStage = localStorage.getItem("selectedStage") || "1";
 const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
-ballImage.src = `../images/cookies/${selectedCookie}.png`; // 선택된 쿠키가 공 이미지 역할
+ballImage.src = `../images/balls/${selectedCookie}.png`; // 선택된 쿠키가 공 이미지 역할
 brickImage.src = "../images/brick.png";
 
 const backgroundImage = new Image();
@@ -250,7 +250,7 @@ document.addEventListener("keydown", (e) => {
       jsAbility();
     }
   }
-});
+})
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
