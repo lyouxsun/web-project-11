@@ -7,6 +7,9 @@ const backBtn = document.getElementById("backBtn");
 const scoreEl = document.getElementById("score");
 const highScoreEl = document.getElementById("highScore");
 const brickImage = new Image();
+const ballImage = new Image();
+
+ballImage.src = "../images/ball.png";
 brickImage.src = "../images/brick.png";
 
 let score = 0;
@@ -46,13 +49,13 @@ const player = {
 const initialBallSpeed =
   selectedStage === "2" ? 3 : selectedStage === "3" ? 4 : 2;
 
-const ball = {
-  x: canvas.width / 2,
-  y: canvas.height - 120,
-  dx: initialBallSpeed,
-  dy: -initialBallSpeed,
-  radius: 8,
-};
+  const ball = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: initialBallSpeed,
+    dy: -initialBallSpeed,
+    radius: 25,  // 예: 8 → 16으로 키움
+  };
 
 let brickRowCount = 2;
 let brickColumnCount = 2;
@@ -99,11 +102,7 @@ function drawPlayer() {
 }
 
 function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = "#ff5722";
-  ctx.fill();
-  ctx.closePath();
+  ctx.drawImage(ballImage, ball.x - ball.radius, ball.y - ball.radius, ball.radius * 2, ball.radius * 2);
 }
 
 function drawBricks() {
@@ -178,12 +177,19 @@ function update() {
   if (allBricksCleared()) {
     running = false;
     draw();
+  
     setTimeout(() => {
       alert(`🎉 클리어!\n점수: ${score}`);
-      const retry = confirm("다시 시작하시겠습니까?");
-      if (retry) {
-        startGame();
+  
+      const currentStage = parseInt(selectedStage, 10);
+      if (currentStage < 3) {
+        // 다음 스테이지로 이동
+        localStorage.setItem("selectedStage", (currentStage + 1).toString());
+        alert(`다음 스테이지(${currentStage + 1})로 이동합니다!`);
+        window.location.reload();
       } else {
+        // 마지막 스테이지 클리어
+        alert("🎉 모든 스테이지를 클리어했습니다!");
         window.location.href = "../select/select.html";
       }
     }, 200);
