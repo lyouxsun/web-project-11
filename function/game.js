@@ -17,7 +17,7 @@ let highScore = 0;
 let running = false;
 
 const selectedStage = localStorage.getItem("selectedStage") || "1";
-const selectedCookie = localStorage.getItem("selectedCookie") || "brave";
+const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
 
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
@@ -34,9 +34,9 @@ const playerImage = new Image();
 playerImage.src = `../images/cookies/${selectedCookie}.png`;
 
 let cookieSpeed = 30;
-if (selectedCookie === "ninja") cookieSpeed = 40;
-else if (selectedCookie === "muscle") cookieSpeed = 25;
-else if (selectedCookie === "wizard") cookieSpeed = 35;
+if (selectedCookie === "HTML_Cookie") cookieSpeed = 40;
+else if (selectedCookie === "CSS_Cookie") cookieSpeed = 25;
+else if (selectedCookie === "JS_Cookie") cookieSpeed = 35;
 
 const player = {
   x: canvas.width / 2 - 50,
