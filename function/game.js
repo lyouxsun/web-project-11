@@ -9,6 +9,7 @@ const highScoreEl = document.getElementById("highScore");
 const brickImage = new Image();
 const ballImage = new Image();
 
+brickImage.src = "../images/brick.png";
 
 let score = 0;
 let highScore = 0;
@@ -18,7 +19,6 @@ const selectedStage = localStorage.getItem("selectedStage") || "1";
 const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
 ballImage.src = `../images/balls/${selectedCookie}.png`; // 선택된 쿠키가 공 이미지 역할
 brickImage.src = "../images/brick.png";
-
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
   selectedStage === "1"
