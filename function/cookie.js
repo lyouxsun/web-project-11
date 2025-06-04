@@ -1,28 +1,9 @@
 let startTime = Date.now();
-let speedBoostActive = false;
-let revivedOnce = false;
-
-// 기본 쿠키 속도
-const baseSpeedMap = {
-  brave: 10,
-  boarder: 14,
-  zombie: 10,
-};
-
-// 현재 쿠키의 기본 속도 반환
-function getBaseSpeed() {
-  return baseSpeedMap[selectedCookie];
-}
-
-function getSpeed() {
-  if (speedBoostActive) {
-    return (getBaseSpeed() + 10) / 10;
-  } else {
-    return (getBaseSpeed() + 5) / 10;
-  }
-}
+let abilityUsed = false;
 
 function cssAbility() {
+  if (abilityUsed) return;  // 이미 사용했으면 리턴
+  abilityUsed = true;       // 사용했음을 기록
   alert("K키를 누르면 display:none");
 
   // 사용 가능한 벽돌 수집
@@ -41,4 +22,18 @@ function cssAbility() {
     const { c, r } = availableBricks.splice(index, 1)[0];
     bricks[c][r].status = 0;
   }
+}
+
+function jsAbility() {
+  console.log("js ability");
+  if (abilityUsed) return;
+  abilityUsed = true;
+  let newBall = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: initialBallSpeed * (Math.random() > 0.5 ? 1 : -1),
+    dy: -initialBallSpeed,
+    radius: 50,
+  };
+  balls.push(newBall);
 }
