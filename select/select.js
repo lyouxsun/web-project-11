@@ -78,3 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// 도움말 열기
+document.getElementById("helpBtn").addEventListener("click", function () {
+  document.getElementById("helpModal").style.display = "flex";
+});
+
+// 도움말 닫기
+function closeHelp() {
+  document.getElementById("helpModal").style.display = "none";
+}
