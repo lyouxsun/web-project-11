@@ -13,11 +13,29 @@
         <span id="highScore">0</span> / 체력: <span id="hp">3</span>
       </div>
 
-      <canvas id="gameCanvas" width="1200" height="700"></canvas>
+      <canvas id="gameCanvas" width="1200" height="800"></canvas>
       <div id="btnDiv">
         <button class="normal_btn" id="restartBtn">다시 시작</button>
         <button class="normal_btn" id="backBtn">선택 화면으로</button>
       </div>
+    </div>
+
+    <div id="skillNotice" style="display: none">
+      <img
+        id="skillImage"
+        src="../images/skills/css_skills.png"
+        alt="CSS Skill"
+      />
+      <p>display:none; 스킬 발동!</p>
+    </div>
+
+    <div id="jsSkillNotice" style="display: none">
+      <img
+        id="jsSkillImage"
+        src="../images/skills/js_skills.png"
+        alt="JS Skill"
+      />
+      <p>append(JS쿠키) 스킬 발동!</p>
     </div>
 
     <script src="../function/cookie.js"></script>

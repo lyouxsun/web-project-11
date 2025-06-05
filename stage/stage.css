@@ -20,7 +20,7 @@ body {
   padding: 30px;
   border-radius: 15px;
   text-align: center;
-  font-family: 'CookieRun', sans-serif;
+  font-family: "CookieRun", sans-serif;
 }
 
 #resultBox button {
@@ -43,23 +43,13 @@ body {
 
 #gameCanvas {
   display: block;
-  margin: 0px auto;
+  margin: 20px auto 0 auto;
   background-color: #87cefa;
   border: 3px solid #333;
 }
 
 #scoreBoard {
-  /* position: absolute; */
-  top: 10px;
-  left: 10px;
-  font-size: 18px;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #888;
-  z-index: 10;
-  line-height: 1.6;
-  margin: 10px;
+  display: none;
 }
 
 #wrapper {
@@ -95,4 +85,44 @@ body {
 #btnDiv {
   display: flex;
   gap: 20px;
+}
+
+/* 공통 알림 스타일 */
+#skillNotice,
+#jsSkillNotice {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  z-index: 9999;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+#skillNotice img,
+#jsSkillNotice img {
+  width: 300px;
+  height: auto;
+  opacity: 0.8;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
 }

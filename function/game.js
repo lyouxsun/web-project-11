@@ -247,7 +247,7 @@ document.addEventListener("keydown", (e) => {
     player.x = Math.max(0, player.x - player.speed);
   } else if (e.key === "ArrowRight") {
     player.x = Math.min(canvas.width - player.width, player.x + player.speed);
-  } else if (e.key === "k" || e.key === "K" || e.key === "ㅏ") {
+  } else if (e.key === "s" || e.key === "S" || e.key === "ㄴ") {
     console.log("cookie=", selectedCookie);
     if (selectedCookie === "CSS_Cookie_Ball") {
       cssAbility();
