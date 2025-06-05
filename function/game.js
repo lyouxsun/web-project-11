@@ -38,7 +38,7 @@ if (selectedCookie === "HTML_Cookie") playerSpeed = 40;
 else if (selectedCookie === "CSS_Cookie") playerSpeed = 25;
 else if (selectedCookie === "JS_Cookie") playerSpeed = 35;
 
-const BASE_BALL_SPEED =
+const initialBallSpeed =
   selectedStage === "2" ? 5 : selectedStage === "3" ? 7 : 4;
 
 const player = {
@@ -126,11 +126,11 @@ function update() {
 
     // 벽 충돌
     if (b.x + b.dx > canvas.width - b.radius || b.x + b.dx < b.radius) {
-      b.dx = -Math.sign(b.dx) * BASE_BALL_SPEED;
+      b.dx = -Math.sign(b.dx) * initialBallSpeed;
     }
 
     if (b.y + b.dy < b.radius) {
-      b.dy = BASE_BALL_SPEED;
+      b.dy = -Math.sign(b.dy) * initialBallSpeed;
     } else if (
       b.y + b.dy > player.y &&
       b.x > player.x &&
@@ -139,8 +139,8 @@ function update() {
       const collidePoint = b.x - (player.x + player.width / 2);
       const normalizedPoint = collidePoint / (player.width / 2);
       const angle = (normalizedPoint * Math.PI) / 3;
-      b.dx = BASE_BALL_SPEED * Math.sin(angle);
-      b.dy = -BASE_BALL_SPEED * Math.cos(angle);
+      b.dx = initialBallSpeed * Math.sin(angle);
+      b.dy = -initialBallSpeed * Math.cos(angle);
     } else if (b.y + b.dy > canvas.height) {
       // 공이 아래로 떨어진 경우 해당 공만 제거
       balls = balls.filter((ball) => ball !== b);
@@ -221,8 +221,8 @@ function startGame() {
   const newBall = {
     x: canvas.width / 2,
     y: canvas.height - 120,
-    dx: BASE_BALL_SPEED,
-    dy: -BASE_BALL_SPEED,
+    dx: initialBallSpeed,
+    dy: -initialBallSpeed,
     radius: 50,
   };
 
