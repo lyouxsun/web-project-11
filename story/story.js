@@ -35,7 +35,7 @@ let charIndex = 0;
 
 function typeLine() {
   if (paragraphIndex >= storyParagraphs.length) {
-    setTimeout(selectCookie, 1500); // 모든 스토리 끝나고 1.5초 뒤 이동
+    setTimeout(selectCookie, 1000); // 모든 스토리 끝나고 1.5초 뒤 이동
     return;
   }
 
