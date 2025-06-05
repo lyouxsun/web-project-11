@@ -38,16 +38,8 @@ if (selectedCookie === "HTML_Cookie") playerSpeed = 40;
 else if (selectedCookie === "CSS_Cookie") playerSpeed = 25;
 else if (selectedCookie === "JS_Cookie") playerSpeed = 35;
 
-const initialBallSpeed =
+const BASE_BALL_SPEED =
   selectedStage === "2" ? 5 : selectedStage === "3" ? 7 : 4;
-
-const ball = {
-  x: canvas.width / 2,
-  y: canvas.height - 120,
-  dx: initialBallSpeed,
-  dy: -initialBallSpeed,
-  radius: 50,
-};
 
 const player = {
   x: canvas.width / 2 - 100,
@@ -134,11 +126,11 @@ function update() {
 
     // 벽 충돌
     if (b.x + b.dx > canvas.width - b.radius || b.x + b.dx < b.radius) {
-      b.dx = -Math.sign(b.dx) * initialBallSpeed;
+      b.dx = -Math.sign(b.dx) * BASE_BALL_SPEED;
     }
 
     if (b.y + b.dy < b.radius) {
-      b.dy = -Math.sign(b.dy) * initialBallSpeed;
+      b.dy = BASE_BALL_SPEED;
     } else if (
       b.y + b.dy > player.y &&
       b.x > player.x &&
@@ -147,8 +139,8 @@ function update() {
       const collidePoint = b.x - (player.x + player.width / 2);
       const normalizedPoint = collidePoint / (player.width / 2);
       const angle = (normalizedPoint * Math.PI) / 3;
-      b.dx = initialBallSpeed * Math.sin(angle);
-      b.dy = -initialBallSpeed * Math.cos(angle);
+      b.dx = BASE_BALL_SPEED * Math.sin(angle);
+      b.dy = -BASE_BALL_SPEED * Math.cos(angle);
     } else if (b.y + b.dy > canvas.height) {
       // 공이 아래로 떨어진 경우 해당 공만 제거
       balls = balls.filter((ball) => ball !== b);
@@ -225,13 +217,16 @@ function startGame() {
 
   score = 0;
   running = true;
-  ball.x = canvas.width / 2;
-  ball.y = canvas.height - 120;
-  ball.dx = initialBallSpeed;
-  ball.dy = -initialBallSpeed;
   player.x = canvas.width / 2 - 50;
+  const newBall = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: BASE_BALL_SPEED,
+    dy: -BASE_BALL_SPEED,
+    radius: 50,
+  };
 
-  balls = [ball];
+  balls = [newBall];
 
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
@@ -262,7 +257,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 restartBtn.addEventListener("click", () => {
-  startGame();
+  window.location.reload();
 });
 
 backBtn.addEventListener("click", () => {
