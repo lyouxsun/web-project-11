@@ -4,15 +4,11 @@ const resultScore = document.getElementById("resultScore");
 const restartBtn = document.getElementById("restartBtn");
 const backBtn = document.getElementById("backBtn");
 
-const scoreEl = document.getElementById("score");
-const highScoreEl = document.getElementById("highScore");
 const brickImage = new Image();
 const ballImage = new Image();
 
 brickImage.src = "../images/brick.png";
 
-let score = 0;
-let highScore = 0;
 let running = false;
 
 const selectedStage = localStorage.getItem("selectedStage") || "1";
@@ -163,14 +159,12 @@ function update() {
   }
 
   collisionDetection();
-  scoreEl.textContent = score;
-  highScoreEl.textContent = highScore;
 
   if (allBricksCleared()) {
     running = false;
     draw();
     setTimeout(() => {
-      alert(`🎉 클리어!\n점수: ${score}`);
+      alert(`🎉 클리어!`);
       const currentStage = parseInt(selectedStage, 10);
       if (currentStage < 3) {
         localStorage.setItem("selectedStage", (currentStage + 1).toString());
@@ -223,7 +217,6 @@ function gameLoop() {
 function startGame() {
   abilityUsed = false;
 
-  score = 0;
   running = true;
   ball.x = canvas.width / 2;
   ball.y = canvas.height - 120;

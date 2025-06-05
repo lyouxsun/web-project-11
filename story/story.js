@@ -16,7 +16,7 @@ const storyParagraphs = [
   [
     "결국 버그가 폭주하며 웹 세상이 무너지기 시작했어.",
     "CSS, HTML, JS 쿠키는 더 이상 함께 할 수 없었고,",
-    "웹 세상 밖에서 다시 만나기로 약속하고 뿔뿔이 흩어져 탈출하기 시작했어…!",
+    "웹 세상 밖에서 다시 만나기로 약속하고 살이남기 위한 탈출이 시작돼…!",
   ],
 ];
 
@@ -34,7 +34,10 @@ let lineIndex = 0;
 let charIndex = 0;
 
 function typeLine() {
-  if (paragraphIndex >= storyParagraphs.length) return;
+  if (paragraphIndex >= storyParagraphs.length) {
+    setTimeout(selectCookie, 1500); // 모든 스토리 끝나고 1.5초 뒤 이동
+    return;
+  }
 
   const currentParagraph = storyParagraphs[paragraphIndex];
   const currentLine = currentParagraph[lineIndex];
