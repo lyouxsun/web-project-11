@@ -48,6 +48,10 @@ body {
   border: 3px solid #333;
 }
 
+#scoreBoard {
+  display: none;
+}
+
 #wrapper {
   display: flex;
   flex-direction: column;
