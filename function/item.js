@@ -30,15 +30,25 @@ function collisionDetection() {
             if (score > highScore) highScore = score;
 
             if (Math.random() < ITEM_DROP_RATE) {
-              const type = Math.random() < 0.5 ? "speed" : "big";
-              const item = {
-                x: brick.x + brickWidth / 2 - ITEM_SIZE / 2,
-                y: brick.y,
-                type,
-                activated: false,
-                createdAt: Date.now(),
-              };
-              items.push(item);
+              let availableTypes = [];
+              if (!speedBoostActive) availableTypes.push("speed");
+              if (!bigBallActive) availableTypes.push("big");
+
+              if (availableTypes.length > 0) {
+                const randomTypeIndex = Math.floor(
+                  Math.random() * availableTypes.length
+                );
+                const type = availableTypes[randomTypeIndex];
+
+                const item = {
+                  x: brick.x + brickWidth / 2 - ITEM_SIZE / 2,
+                  y: brick.y,
+                  type,
+                  activated: false,
+                  createdAt: Date.now(),
+                };
+                items.push(item);
+              }
             }
           }
         }
