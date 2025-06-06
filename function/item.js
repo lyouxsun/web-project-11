@@ -19,16 +19,32 @@ function collisionDetection() {
         const brick = bricks[c][r];
         if (brick.status === 1) {
           if (
-            b.x > brick.x &&
-            b.x < brick.x + brickWidth &&
-            b.y > brick.y &&
-            b.y < brick.y + brickHeight
+            b.x + b.radius > brick.x &&
+            b.x - b.radius < brick.x + brickWidth &&
+            b.y + b.radius > brick.y &&
+            b.y - b.radius < brick.y + brickHeight
           ) {
-            b.dy = -Math.sign(b.dy) * initialBallSpeed;
+            // 방향 결정: 충돌한 면 판단
+            const ballCenterX = b.x;
+            const ballCenterY = b.y;
+            const brickCenterX = brick.x + brickWidth / 2;
+            const brickCenterY = brick.y + brickHeight / 2;
+            const dx = ballCenterX - brickCenterX;
+            const dy = ballCenterY - brickCenterY;
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+              // 좌우 충돌
+              b.dx = -Math.sign(b.dx) * initialBallSpeed;
+            } else {
+              // 상하 충돌
+              b.dy = -Math.sign(b.dy) * initialBallSpeed;
+            }
+
             brick.status = 0;
             score++;
             if (score > highScore) highScore = score;
 
+            // 아이템 드랍
             if (Math.random() < ITEM_DROP_RATE) {
               let availableTypes = [];
               if (!speedBoostActive) availableTypes.push("speed");

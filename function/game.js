@@ -25,21 +25,16 @@ backgroundImage.src = `../images/background/${
     ? "oven0fWitch.png"
     : selectedStage === "2"
     ? "sunflower.png"
-    : selectedStage === "3"
-    ? "sea.png"
-    : "bonus.png"
+    : "sea.png"
 }`;
 
 const playerImage = new Image();
 playerImage.src = `../images/bar.png`;
 
-let playerSpeed = 30;
-if (selectedCookie === "HTML_Cookie") playerSpeed = 40;
-else if (selectedCookie === "CSS_Cookie") playerSpeed = 25;
-else if (selectedCookie === "JS_Cookie") playerSpeed = 35;
+let playerSpeed = 40;
 
 const initialBallSpeed =
-  selectedStage === "2" ? 5 : selectedStage === "3" ? 7 : 4;
+  selectedStage === "2" ? 5 : selectedStage === "3" ? 6 : 4;
 
 const player = {
   x: canvas.width / 2 - 100,
