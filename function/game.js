@@ -162,7 +162,7 @@ function update() {
     running = false;
     draw();
     setTimeout(() => {
-      alert(`🎉 클리어!\n점수: ${score}`);
+      alert(`🎉 클리어!`);
       const currentStage = parseInt(selectedStage, 10);
       if (currentStage < 3) {
         localStorage.setItem("selectedStage", (currentStage + 1).toString());
