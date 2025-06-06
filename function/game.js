@@ -25,21 +25,16 @@ backgroundImage.src = `../images/background/${
     ? "oven0fWitch.png"
     : selectedStage === "2"
     ? "sunflower.png"
-    : selectedStage === "3"
-    ? "sea.png"
-    : "bonus.png"
+    : "sea.png"
 }`;
 
 const playerImage = new Image();
 playerImage.src = `../images/bar.png`;
 
-let playerSpeed = 30;
-if (selectedCookie === "HTML_Cookie") playerSpeed = 40;
-else if (selectedCookie === "CSS_Cookie") playerSpeed = 25;
-else if (selectedCookie === "JS_Cookie") playerSpeed = 35;
+let playerSpeed = 60;
 
 const initialBallSpeed =
-  selectedStage === "2" ? 5 : selectedStage === "3" ? 7 : 4;
+  selectedStage === "2" ? 5 : selectedStage === "3" ? 6 : 4;
 
 const player = {
   x: canvas.width / 2 - 100,
@@ -150,8 +145,15 @@ function update() {
   // 공이 하나도 없으면 게임 오버
   if (balls.length === 0) {
     running = false;
-    alert("게임 오버!");
-    document.location.reload();
+
+    (async () => {
+      await showGameMessage("💥 게임 오버!", 1500);
+
+      // 메시지 보여준 후 약간의 여유 시간 주고 리로드
+      setTimeout(() => {
+        document.location.reload();
+      }, 500);
+    })();
   }
 
   collisionDetection();
@@ -161,18 +163,24 @@ function update() {
   if (allBricksCleared()) {
     running = false;
     draw();
-    setTimeout(() => {
-      alert(`🎉 클리어!\n점수: ${score}`);
+    (async () => {
+      await showGameMessage("🎉 클리어!", 1500);
+
       const currentStage = parseInt(selectedStage, 10);
       if (currentStage < 3) {
+        await showGameMessage(
+          `다음 스테이지(${currentStage + 1})로 이동합니다!`,
+          2000
+        );
         localStorage.setItem("selectedStage", (currentStage + 1).toString());
-        alert(`다음 스테이지(${currentStage + 1})로 이동합니다!`);
         window.location.reload();
       } else {
-        alert("🎉 바깥 세상으로 탈출에 성공했습니다!");
-        window.location.href = "../select/select.html";
+        await showGameMessage("🎉 바깥 세상으로 탈출에 성공했습니다!", 2500);
+        setTimeout(() => {
+          window.location.href = "../ending/ending.html";
+        }, 300);
       }
-    }, 200);
+    })();
   }
 
   items = items.filter((item) => {
@@ -181,15 +189,14 @@ function update() {
     if (!item.activated && elapsed >= 0) {
       item.activated = true;
       if (item.type === "speed" && !speedBoostActive) {
-        alert("🚀 속도 증가 아이템 발동!");
+        showMessage("🚀 광속 질주 아이템 발동!");
         activateSpeedBoost();
       } else if (item.type === "big" && !bigBallActive) {
-        alert("🔵 공 커짐 아이템 발동!");
+        showMessage("🔵 거대화 아이템 발동!");
         activateBigBall();
       }
     }
 
-    // 3초 지나면 제거
     return elapsed < 3000;
   });
 }
@@ -263,3 +270,31 @@ restartBtn.addEventListener("click", () => {
 backBtn.addEventListener("click", () => {
   window.location.href = "../select/select.html";
 });
+
+function showMessage(text, duration = 2000) {
+  const messageEl = document.getElementById("item-message");
+  messageEl.textContent = text;
+  messageEl.style.display = "block";
+
+  setTimeout(() => {
+    messageEl.style.display = "none";
+  }, duration);
+}
+
+function showGameMessage(text, duration = 2000) {
+  return new Promise((resolve) => {
+    const messageEl = document.getElementById("game-message");
+    const itemMessageEl = document.getElementById("item-message");
+    messageEl.textContent = text;
+    messageEl.style.display = "block";
+
+    if (itemMessageEl) {
+      itemMessageEl.style.display = "none";
+    }
+
+    setTimeout(() => {
+      messageEl.style.display = "none";
+      resolve(); // 메시지 표시가 끝나면 resolve 호출
+    }, duration);
+  });
+}
