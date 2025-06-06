@@ -170,7 +170,7 @@ function update() {
         window.location.reload();
       } else {
         alert("🎉 바깥 세상으로 탈출에 성공했습니다!");
-        window.location.href = "../select/select.html";
+        window.location.href = "../ending/ending.html";
       }
     }, 200);
   }
