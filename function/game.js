@@ -31,7 +31,7 @@ backgroundImage.src = `../images/background/${
 const playerImage = new Image();
 playerImage.src = `../images/bar.png`;
 
-let playerSpeed = 40;
+let playerSpeed = 60;
 
 const initialBallSpeed =
   selectedStage === "2" ? 5 : selectedStage === "3" ? 6 : 4;
