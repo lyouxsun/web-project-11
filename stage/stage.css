@@ -126,3 +126,11 @@ body {
     transform: translate(-50%, -40%);
   }
 }
+
+#music {
+  position: fixed;
+  left: 30px;
+  top: 30px;
+  width: 60px;
+  height: 60px;
+}
