@@ -146,3 +146,15 @@ body {
   z-index: 10;
   display: none;
 }
+
+#game-message {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  color: white;
+  text-shadow: 0 0 5px black;
+  z-index: 10;
+  display: none;
+}

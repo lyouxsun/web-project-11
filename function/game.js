@@ -150,8 +150,15 @@ function update() {
   // 공이 하나도 없으면 게임 오버
   if (balls.length === 0) {
     running = false;
-    alert("게임 오버!");
-    document.location.reload();
+
+    (async () => {
+      await showGameMessage("💥 게임 오버!", 1500);
+
+      // 메시지 보여준 후 약간의 여유 시간 주고 리로드
+      setTimeout(() => {
+        document.location.reload();
+      }, 500);
+    })();
   }
 
   collisionDetection();
@@ -161,18 +168,24 @@ function update() {
   if (allBricksCleared()) {
     running = false;
     draw();
-    setTimeout(() => {
-      alert(`🎉 클리어!`);
+    (async () => {
+      await showGameMessage("🎉 클리어!", 1500);
+
       const currentStage = parseInt(selectedStage, 10);
       if (currentStage < 3) {
+        await showGameMessage(
+          `다음 스테이지(${currentStage + 1})로 이동합니다!`,
+          2000
+        );
         localStorage.setItem("selectedStage", (currentStage + 1).toString());
-        alert(`다음 스테이지(${currentStage + 1})로 이동합니다!`);
         window.location.reload();
       } else {
-        alert("🎉 바깥 세상으로 탈출에 성공했습니다!");
-        window.location.href = "../ending/ending.html";
+        await showGameMessage("🎉 바깥 세상으로 탈출에 성공했습니다!", 2500);
+        setTimeout(() => {
+          window.location.href = "../ending/ending.html";
+        }, 300);
       }
-    }, 200);
+    })();
   }
 
   items = items.filter((item) => {
@@ -189,7 +202,7 @@ function update() {
       }
     }
 
-    return elapsed < 2000;
+    return elapsed < 3000;
   });
 }
 
@@ -271,4 +284,22 @@ function showMessage(text, duration = 2000) {
   setTimeout(() => {
     messageEl.style.display = "none";
   }, duration);
+}
+
+function showGameMessage(text, duration = 2000) {
+  return new Promise((resolve) => {
+    const messageEl = document.getElementById("game-message");
+    const itemMessageEl = document.getElementById("item-message");
+    messageEl.textContent = text;
+    messageEl.style.display = "block";
+
+    if (itemMessageEl) {
+      itemMessageEl.style.display = "none";
+    }
+
+    setTimeout(() => {
+      messageEl.style.display = "none";
+      resolve(); // 메시지 표시가 끝나면 resolve 호출
+    }, duration);
+  });
 }
