@@ -181,16 +181,15 @@ function update() {
     if (!item.activated && elapsed >= 0) {
       item.activated = true;
       if (item.type === "speed" && !speedBoostActive) {
-        alert("🚀 속도 증가 아이템 발동!");
+        showMessage("🚀 광속 질주 아이템 발동!");
         activateSpeedBoost();
       } else if (item.type === "big" && !bigBallActive) {
-        alert("🔵 공 커짐 아이템 발동!");
+        showMessage("🔵 거대화 아이템 발동!");
         activateBigBall();
       }
     }
 
-    // 3초 지나면 제거
-    return elapsed < 3000;
+    return elapsed < 2000;
   });
 }
 
@@ -263,3 +262,13 @@ restartBtn.addEventListener("click", () => {
 backBtn.addEventListener("click", () => {
   window.location.href = "../select/select.html";
 });
+
+function showMessage(text, duration = 2000) {
+  const messageEl = document.getElementById("item-message");
+  messageEl.textContent = text;
+  messageEl.style.display = "block";
+
+  setTimeout(() => {
+    messageEl.style.display = "none";
+  }, duration);
+}
