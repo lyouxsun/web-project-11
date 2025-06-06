@@ -21,6 +21,7 @@
         <div class="select-card">
           <div class="info-container">
             <p>HTML 쿠키</p>
+            <p class="desc">능력: 근본</p>
             <img
               src="../images/Information.png"
               alt="정보"
@@ -48,6 +49,7 @@
         <div class="select-card">
           <div class="info-container">
             <p>CSS 쿠키</p>
+            <p class="desc">능력: display: none;</p>
             <img
               src="../images/Information.png"
               alt="정보"
@@ -75,6 +77,7 @@
         <div class="select-card">
           <div class="info-container">
             <p>JS 쿠키</p>
+            <p class="desc">능력: append(JS_Cookie)</p>
             <img
               src="../images/Information.png"
               alt="정보"
@@ -146,18 +149,6 @@
             선택하기
           </button>
         </div>
-        <div class="select-card">
-          <p>보너스 타임</p>
-          <img
-            src="../images/background/bonus.png"
-            alt="보너스 타임"
-            width="340px"
-            height="270px"
-          />
-          <button class="select_s_btn" onclick="selectStage(this,'bonus')">
-            선택하기
-          </button>
-        </div>
       </div>
     </div>
 
@@ -176,10 +167,11 @@
         <h2>게임 플레이 방법</h2>
         <ul>
           <li>← → 방향키로 바를 움직이세요</li>
-          <li>공으로 벽돌을 모두 깨면 스테이지 클리어입니다.</li>
-          <li>각 쿠키의 스킬은 S 키로 발동됩니다</li>
-          <li>CSS: 벽돌 제거 | JS: 공 추가</li>
-          <li>각 쿠키의 스킬은 스테이지당 한 번 사용 가능합니다.</li>
+          <li>공이 닿는 바의 위치에 따라서 공이 움직이는 각도가 변화합니다</li>
+          <li>스테이지는 총 세 스테이지이며,</li>
+          <li>쿠키 공으로 벽돌을 모두 깨면 다음 스테이지로 이동합니다</li>
+          <li>각 쿠키의 스킬은 S 키 다운 시 발동 시킬 수 있습니다</li>
+          <li>각 쿠키의 스킬은 스테이지당 한 번 사용 가능합니다</li>
         </ul>
         <button onclick="closeHelp()" class="close-btn">닫기</button>
       </div>
