@@ -124,3 +124,5 @@ document.getElementById("helpBtn").addEventListener("click", function () {
 function closeHelp() {
   document.getElementById("helpModal").style.display = "none";
 }
+
+//test
