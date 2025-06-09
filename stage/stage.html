@@ -10,18 +10,44 @@
     <div id="wrapper">
       <div id="scoreBoard">
         점수: <span id="score">0</span> / 최고점수:
-        <span id="highScore">0</span> / 체력: <span id="hp">3</span> / 시간:
-        <span id="timer">180</span>s
+        <span id="highScore">0</span> / 체력: <span id="hp">3</span>
       </div>
 
-      <canvas id="gameCanvas" width="800" height="500"></canvas>
+      <canvas id="gameCanvas" width="1200" height="800"></canvas>
       <div id="btnDiv">
         <button class="normal_btn" id="restartBtn">다시 시작</button>
         <button class="normal_btn" id="backBtn">선택 화면으로</button>
       </div>
     </div>
+
+    <p id="item-message"></p>
+    <p id="game-message"></p>
+
+    <div id="skillNotice" style="display: none">
+      <img
+        id="skillImage"
+        src="../images/skills/css_skills.png"
+        alt="CSS Skill"
+      />
+      <p>display:none; 스킬 발동!</p>
+    </div>
+
+    <div id="jsSkillNotice" style="display: none">
+      <img
+        id="jsSkillImage"
+        src="../images/skills/js_skills.png"
+        alt="JS Skill"
+      />
+      <p>append(JS쿠키) 스킬 발동!</p>
+    </div>
+
+    <img id="music" src="../images/volume.png" />
+
+    <audio id="bgMusic" src="../music/MainTheme.m4a" loop autoplay></audio>
+
     <script src="../function/cookie.js"></script>
-    <!-- <script src="../function/item.js"></script>   -->
+    <script src="../function/item.js"></script>
     <script src="../function/game.js"></script>
+    <script src="../function/music.js"></script>
   </body>
 </html>

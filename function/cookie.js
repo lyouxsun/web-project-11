@@ -1,44 +1,67 @@
 let startTime = Date.now();
-let speedBoostActive = false;
-let revivedOnce = false;
+let abilityUsed = false;
 
-// 기본 쿠키 속도
-const baseSpeedMap = {
-  brave: 10,
-  boarder: 14,
-  zombie: 10,
-};
+function cssAbility() {
+  if (abilityUsed) return; // 이미 사용했으면 리턴
+  abilityUsed = true; // 사용했음을 기록
+  showSkillNotice();
 
-// 현재 쿠키의 기본 속도 반환
-function getBaseSpeed() {
-  return baseSpeedMap[selectedCookie] || 10;
+  // 사용 가능한 벽돌 수집
+  const availableBricks = [];
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      if (bricks[c][r].status === 1) {
+        availableBricks.push({ c, r });
+      }
+    }
+  }
+
+  // 최대 3개의 벽돌 제거
+  for (let i = 0; i < 3 && availableBricks.length > 0; i++) {
+    const index = Math.floor(Math.random() * availableBricks.length);
+    const { c, r } = availableBricks.splice(index, 1)[0];
+    bricks[c][r].status = 0;
+  }
 }
 
-// 시간 경과에 따른 추가 속도 계산
-function getTimeBoost() {
-  const secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
-  return Math.floor(secondsElapsed / 30); // 30초마다 +1
-}
+function jsAbility() {
+  if (abilityUsed) return;
+  abilityUsed = true;
+  showJsSkillNotice();
 
-// 최종 이동 속도 반환
-function getCurrentSpeed() {
-  const selectedCookie = localStorage.getItem("selectedCookie");
-  if (selectedCookie === "zombie") return 10;
-  if (selectedCookie === "boarder") return 14;
-  return 4; // brave 기본 속도
-}
-
-// 보더맛 쿠키 - 빠름 (이미 base 속도에서 반영되어 있음)
-
-// 좀비맛 쿠키 - 1회 부활 가능
-function canRevive() {
-  return selectedCookie === "zombie" && !revivedOnce;
-}
-
-function useRevive() {
-  revivedOnce = true;
-  return {
-    hpRestored: 1,
-    message: "좀비맛 쿠키가 부활했습니다!",
+  let newBall = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: initialBallSpeed * (Math.random() > 0.5 ? 1 : -1),
+    dy: -initialBallSpeed,
+    radius: 50,
   };
+  balls.push(newBall);
+}
+
+function showSkillNotice() {
+  const notice = document.getElementById("skillNotice");
+  notice.style.display = "block";
+
+  // 다시 애니메이션 재생을 위해 클래스 제거 후 재추가 (재사용 가능하게)
+  notice.classList.remove("animate");
+  void notice.offsetWidth; // 강제 reflow
+  notice.classList.add("animate");
+
+  setTimeout(() => {
+    notice.style.display = "none";
+  }, 2000); // 애니메이션 길이와 맞춤
+}
+
+function showJsSkillNotice() {
+  const notice = document.getElementById("jsSkillNotice");
+  notice.style.display = "block";
+
+  notice.classList.remove("animate");
+  void notice.offsetWidth; // reflow
+  notice.classList.add("animate");
+
+  setTimeout(() => {
+    notice.style.display = "none";
+  }, 2000);
 }

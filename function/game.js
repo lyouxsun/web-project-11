@@ -1,209 +1,300 @@
-// 캔버스 및 UI 요소 참조
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const resultScore = document.getElementById("resultScore");
+const restartBtn = document.getElementById("restartBtn");
+const backBtn = document.getElementById("backBtn");
 
 const scoreEl = document.getElementById("score");
 const highScoreEl = document.getElementById("highScore");
-const hpEl = document.getElementById("hp");
-const timerEl = document.getElementById("timer");
+const brickImage = new Image();
+const ballImage = new Image();
 
-// 게임 상태 전역 변수
+brickImage.src = "../images/brick.png";
+
 let score = 0;
 let highScore = 0;
-let hp = 3;
-let timeLeft = 180;
 let running = false;
-let step = 0;
 
-let redBlocks = [];
-let blueBlocks = [];
-
-// 쿠키 이미지 선택
-const selectedCookie = localStorage.getItem("selectedCookie") || "brave";
-
-const playerImage = new Image();
-playerImage.src = `../images/cookies/${selectedCookie}.png`;
-
-const player = {
-  x: 50,
-  y: 200,
-  width: 50,
-  height: 60,
-  image: playerImage,
-};
-
-// 스테이지 이미지 선택
 const selectedStage = localStorage.getItem("selectedStage") || "1";
+const selectedCookie = localStorage.getItem("selectedCookie") || "HTML_Cookie";
+ballImage.src = `../images/balls/${selectedCookie}.png`; // 선택된 쿠키가 공 이미지 역할
+brickImage.src = "../images/brick.png";
 const backgroundImage = new Image();
 backgroundImage.src = `../images/background/${
   selectedStage === "1"
     ? "oven0fWitch.png"
     : selectedStage === "2"
     ? "sunflower.png"
-    : selectedStage === "3"
-    ? "sea.png"
-    : "bonus.png"
+    : "sea.png"
 }`;
 
-// 블록 이미지 로딩
-const redBlockImage = new Image();
-redBlockImage.src = "../images/obstacles/obstacles2.png"; // 장애물 이미지 경로
+const playerImage = new Image();
+playerImage.src = `../images/bar.png`;
 
-const blueBlockImage = new Image();
-blueBlockImage.src = "../images/jelly/jelly1.png"; // 아이템 이미지 경로
+let playerSpeed = 60;
 
-// 블록 생성 시 움직이지 않도록 dy 제거
-function spawnBlocks() {
-  if (Math.random() < 0.03) {
-    const y = Math.random() * 300 + 100;
-    const block = {
-      x: 800,
-      y,
-      width: 30,
-      height: 30,
-      speed: 1.5,
-    };
-    if (Math.random() < 0.5) {
-      redBlocks.push({ ...block }); // 장애물
-    } else {
-      blueBlocks.push({ ...block }); // 아이템 (고정)
+const initialBallSpeed =
+  selectedStage === "2" ? 5 : selectedStage === "3" ? 6 : 4;
+
+const player = {
+  x: canvas.width / 2 - 100,
+  y: canvas.height - 100,
+  width: 400,
+  height: 100,
+  speed: playerSpeed,
+};
+
+let brickRowCount = 2;
+let brickColumnCount = 2;
+
+if (selectedStage === "2") {
+  brickRowCount = 3;
+  brickColumnCount = 3;
+} else if (selectedStage === "3") {
+  brickRowCount = 3;
+  brickColumnCount = 5;
+}
+
+const brickWidth = 100;
+const brickHeight = 100;
+const brickPadding = 0;
+const brickOffsetTop = 70;
+
+function calculateBrickOffsetLeft() {
+  const totalWidth =
+    brickColumnCount * (brickWidth + brickPadding) - brickPadding;
+  return (canvas.width - totalWidth) / 2;
+}
+const brickOffsetLeft = calculateBrickOffsetLeft();
+
+const bricks = [];
+for (let c = 0; c < brickColumnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0, status: 1 };
+  }
+}
+
+function allBricksCleared() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      if (bricks[c][r].status === 1) return false;
+    }
+  }
+  return true;
+}
+
+function drawPlayer() {
+  ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+}
+
+function drawBalls() {
+  balls.forEach((b) => {
+    ctx.drawImage(
+      ballImage,
+      b.x - b.radius,
+      b.y - b.radius,
+      b.radius * 2,
+      b.radius * 2
+    );
+  });
+}
+
+function drawBricks() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      if (bricks[c][r].status === 1) {
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.drawImage(brickImage, brickX, brickY, brickWidth, brickHeight);
+      }
     }
   }
 }
 
 function update() {
-  // 장애물 이동 및 충돌
-  redBlocks.forEach((o, i) => {
-    o.x -= o.speed;
-    if (
-      player.x < o.x + o.width &&
-      player.x + player.width > o.x &&
-      player.y < o.y + o.height &&
-      player.y + player.height > o.y
+  balls.forEach((b) => {
+    b.x += b.dx;
+    b.y += b.dy;
+
+    // 벽 충돌
+    if (b.x + b.dx > canvas.width - b.radius || b.x + b.dx < b.radius) {
+      b.dx = -Math.sign(b.dx) * initialBallSpeed;
+    }
+
+    if (b.y + b.dy < b.radius) {
+      b.dy = -Math.sign(b.dy) * initialBallSpeed;
+    } else if (
+      b.y + b.dy > player.y &&
+      b.x > player.x &&
+      b.x < player.x + player.width
     ) {
-      hp--;
-      if (hp <= 0) {
-        if (canRevive()) {
-          const revive = useRevive(); // 좀비맛 쿠키 부활 반영
-          hp = revive.hpRestored;
-          alert(revive.message);
-        } else {
-          running = false;
-          alert("게임 오버!");
-        }
+      const collidePoint = b.x - (player.x + player.width / 2);
+      const normalizedPoint = collidePoint / (player.width / 2);
+      const angle = (normalizedPoint * Math.PI) / 3;
+      b.dx = initialBallSpeed * Math.sin(angle);
+      b.dy = -initialBallSpeed * Math.cos(angle);
+    } else if (b.y + b.dy > canvas.height) {
+      // 공이 아래로 떨어진 경우 해당 공만 제거
+      balls = balls.filter((ball) => ball !== b);
+    }
+  });
+
+  // 공이 하나도 없으면 게임 오버
+  if (balls.length === 0) {
+    running = false;
+
+    (async () => {
+      await showGameMessage("💥 게임 오버!", 1500);
+
+      // 메시지 보여준 후 약간의 여유 시간 주고 리로드
+      setTimeout(() => {
+        document.location.reload();
+      }, 500);
+    })();
+  }
+
+  collisionDetection();
+  scoreEl.textContent = score;
+  highScoreEl.textContent = highScore;
+
+  if (allBricksCleared()) {
+    running = false;
+    draw();
+    (async () => {
+      await showGameMessage("🎉 클리어!", 1500);
+
+      const currentStage = parseInt(selectedStage, 10);
+      if (currentStage < 3) {
+        await showGameMessage(
+          `다음 스테이지(${currentStage + 1})로 이동합니다!`,
+          2000
+        );
+        localStorage.setItem("selectedStage", (currentStage + 1).toString());
+        window.location.reload();
+      } else {
+        await showGameMessage("🎉 바깥 세상으로 탈출에 성공했습니다!", 2500);
+        setTimeout(() => {
+          window.location.href = "../ending/ending.html";
+        }, 300);
       }
-      redBlocks.splice(i, 1);
-    }
-  });
+    })();
+  }
 
-  // update에서 y 이동 삭제
-  blueBlocks.forEach((b, i) => {
-    b.x -= b.speed;
-    if (
-      player.x < b.x + b.width &&
-      player.x + player.width > b.x &&
-      player.y < b.y + b.height &&
-      player.y + player.height > b.y
-    ) {
-      score++;
-      if (score > highScore) highScore = score;
-      blueBlocks.splice(i, 1);
-    }
-  });
+  items = items.filter((item) => {
+    const elapsed = Date.now() - item.createdAt;
 
-  // 화면 밖 제거
-  redBlocks = redBlocks.filter((o) => o.x + o.width > 0);
-  blueBlocks = blueBlocks.filter((b) => b.x + b.width > 0);
+    if (!item.activated && elapsed >= 0) {
+      item.activated = true;
+      if (item.type === "speed" && !speedBoostActive) {
+        showMessage("🚀 광속 질주 아이템 발동!");
+        activateSpeedBoost();
+      } else if (item.type === "big" && !bigBallActive) {
+        showMessage("🔵 거대화 아이템 발동!");
+        activateBigBall();
+      }
+    }
+
+    return elapsed < 3000;
+  });
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // 배경 이미지로 채우기
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-
-  animatePlayer();
-
-  for (const o of redBlocks) {
-    ctx.drawImage(redBlockImage, o.x, o.y, o.width, o.height); // 장애물 이미지
-  }
-
-  for (const b of blueBlocks) {
-    ctx.drawImage(blueBlockImage, b.x, b.y, b.width, b.height); // 아이템 이미지
-  }
-}
-
-function countdown() {
-  const interval = setInterval(() => {
-    if (!running) return clearInterval(interval);
-    timeLeft--;
-    timerEl.textContent = timeLeft;
-    if (timeLeft <= 0) {
-      running = false;
-      alert("시간 초과! 게임 종료!");
-      clearInterval(interval);
-    }
-  }, 1000);
+  drawBricks();
+  drawBalls();
+  drawPlayer();
+  items.forEach((item) => {
+    ctx.drawImage(itemImages[item.type], item.x, item.y, ITEM_SIZE, ITEM_SIZE);
+  });
 }
 
 function gameLoop() {
   if (!running) return;
   update();
   draw();
-  scoreEl.textContent = score;
-  highScoreEl.textContent = highScore;
-  hpEl.textContent = hp;
-  spawnBlocks();
   requestAnimationFrame(gameLoop);
 }
 
-// 초기 속도 설정
-let playerSpeed = getCurrentSpeed(); // ← cookie.js에서 불러옴 (이유신)
-
 function startGame() {
+  abilityUsed = false;
+
   score = 0;
-  hp = 3;
-  timeLeft = 180;
   running = true;
-  redBlocks = [];
-  blueBlocks = [];
-  countdown();
+  player.x = canvas.width / 2 - 50;
+  const newBall = {
+    x: canvas.width / 2,
+    y: canvas.height - 120,
+    dx: initialBallSpeed,
+    dy: -initialBallSpeed,
+    radius: 50,
+  };
+
+  balls = [newBall];
+
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      bricks[c][r].status = 1;
+    }
+  }
+
   gameLoop();
 }
-function animatePlayer() {
-  // 부드러운 흔들림 없이 그냥 현재 위치에 그리기
-  ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
-}
-document.addEventListener("keydown", (e) => {
-  playerSpeed = getCurrentSpeed(); // 시간에 따라 점점 빨라짐 반영
 
-  if (e.key === "ArrowUp") {
-    player.y = Math.max(player.y - playerSpeed, 0); // 위로 이동, 쿠키마다 속도 차이 반영
-  } else if (e.key === "ArrowDown") {
-    player.y = Math.min(player.y + playerSpeed, canvas.height - player.height); // 아래로 이동, 쿠키마다 속도 차이 반영
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    player.x = Math.max(0, player.x - player.speed);
+  } else if (e.key === "ArrowRight") {
+    player.x = Math.min(canvas.width - player.width, player.x + player.speed);
+  } else if (e.key === "s" || e.key === "S" || e.key === "ㄴ") {
+    console.log("cookie=", selectedCookie);
+    if (selectedCookie === "CSS_Cookie_Ball") {
+      cssAbility();
+    } else if (selectedCookie == "JS_Cookie_Ball") {
+      jsAbility();
+    }
   }
 });
 
 window.addEventListener("DOMContentLoaded", () => {
   startGame();
-
-  //다시 시작 버튼
-  const restartBtn = document.getElementById("restartBtn");
-  if (restartBtn) {
-    restartBtn.addEventListener("click", () => {
-      running = false; // 게임 중단
-      alert("3초 후 게임이 다시 시작됩니다!");
-      setTimeout(() => {
-        startGame();
-      }, 3000);
-    });
-  }
-
-  //선택화면으로 돌아가기
-  const backBtn = document.getElementById("backBtn");
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      window.location.href = "../select/select.html";
-    });
-  }
 });
+
+restartBtn.addEventListener("click", () => {
+  window.location.reload();
+});
+
+backBtn.addEventListener("click", () => {
+  window.location.href = "../select/select.html";
+});
+
+function showMessage(text, duration = 2000) {
+  const messageEl = document.getElementById("item-message");
+  messageEl.textContent = text;
+  messageEl.style.display = "block";
+
+  setTimeout(() => {
+    messageEl.style.display = "none";
+  }, duration);
+}
+
+function showGameMessage(text, duration = 2000) {
+  return new Promise((resolve) => {
+    const messageEl = document.getElementById("game-message");
+    const itemMessageEl = document.getElementById("item-message");
+    messageEl.textContent = text;
+    messageEl.style.display = "block";
+
+    if (itemMessageEl) {
+      itemMessageEl.style.display = "none";
+    }
+
+    setTimeout(() => {
+      messageEl.style.display = "none";
+      resolve(); // 메시지 표시가 끝나면 resolve 호출
+    }, duration);
+  });
+}

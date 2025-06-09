@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>선택창</title>
+    <title>스테이지 & 쿠키 선택</title>
     <link rel="stylesheet" href="select.css" />
     <script src="select.js" defer></script>
   </head>
@@ -19,39 +19,86 @@
       <h1>쿠키 선택하기</h1>
       <div class="select-list">
         <div class="select-card">
-          <p>용감한 쿠키</p>
+          <div class="info-container">
+            <p>HTML 쿠키</p>
+            <p class="desc">능력: 근본</p>
+            <img
+              src="../images/Information.png"
+              alt="정보"
+              class="info-icon"
+              data-cookie="html"
+            />
+            <div class="tooltip" id="tooltip-html">
+              "내 뼈대 없인 웹사이트가 무너진다고!" 웹페이지의 구조를 담당하는
+              든든한 리더. 태그 태그 거리며 모든 쿠키들을 감싸주는 따뜻한 존재.
+            </div>
+          </div>
           <img
-            src="../images/cookies/brave.png"
-            alt="용감한 쿠키"
+            src="../images/cookies/HTML_Cookie.png"
+            alt="HTML 쿠키"
             width="340px"
-            height="400px"
+            height="430px"
           />
-          <button class="select_c_btn" onclick="selectCookie(this, 'brave')">
+          <button
+            class="select_c_btn"
+            onclick="selectCookie(this, 'HTML_Cookie_Ball')"
+          >
             선택하기
           </button>
         </div>
-
         <div class="select-card">
-          <p>보더맛 쿠키</p>
+          <div class="info-container">
+            <p>CSS 쿠키</p>
+            <p class="desc">능력: display: none;</p>
+            <img
+              src="../images/Information.png"
+              alt="정보"
+              class="info-icon"
+              data-cookie="css"
+            />
+            <div class="tooltip" id="tooltip-css">
+              "난 예쁘게 꾸미는 게 제일 좋아!" 스타일링의 마법사. 외형을 예쁘게
+              가꾸며, 때로는 display: none; 으로 적을 없애는 재주도 있음.
+            </div>
+          </div>
           <img
-            src="../images/cookies/boarder.png"
-            alt="보더맛 쿠키"
-            width="315px"
-            height="400px"
+            src="../images/cookies/CSS_Cookie.png"
+            alt="CSS 쿠키"
+            width="340px"
+            height="430px"
           />
-          <button class="select_c_btn" onclick="selectCookie(this, 'boarder')">
+          <button
+            class="select_c_btn"
+            onclick="selectCookie(this, 'CSS_Cookie_Ball')"
+          >
             선택하기
           </button>
         </div>
         <div class="select-card">
-          <p>좀비맛 쿠키</p>
+          <div class="info-container">
+            <p>JS 쿠키</p>
+            <p class="desc">능력: append(JS_Cookie)</p>
+            <img
+              src="../images/Information.png"
+              alt="정보"
+              class="info-icon"
+              data-cookie="js"
+            />
+            <div class="tooltip" id="tooltip-js">
+              "난 이벤트에 반응하는 쿠키야!" 행동력 만렙. 클릭하면 점프,
+              마우스오버로 투명화. 간혹 에러를 일으켜 두 명이 되기도...
+            </div>
+          </div>
           <img
-            src="../images/cookies/zombie.png"
-            alt="좀비맛 쿠키"
-            width="340px"
-            height="400px"
+            src="../images/cookies/JS_Cookie.png"
+            alt="JS 쿠키"
+            width="300px"
+            height="430px"
           />
-          <button class="select_c_btn" onclick="selectCookie(this, 'zombie')">
+          <button
+            class="select_c_btn"
+            onclick="selectCookie(this, 'JS_Cookie_Ball')"
+          >
             선택하기
           </button>
         </div>
@@ -64,6 +111,7 @@
       <div class="select-list">
         <div class="select-card">
           <p>마녀의 오븐</p>
+          <p class="desc">난이도: 쉬움</p>
           <img
             src="../images/background/oven0fWitch.png"
             alt="마녀의 오븐"
@@ -77,6 +125,7 @@
 
         <div class="select-card">
           <p>해바라기 숲</p>
+          <p class="desc">난이도: 보통</p>
           <img
             src="../images/background/sunflower.png"
             alt="해바라기 숲"
@@ -89,6 +138,7 @@
         </div>
         <div class="select-card">
           <p>낮 바다</p>
+          <p class="desc">난이도: 어려움</p>
           <img
             src="../images/background/sea.png"
             alt="낮 바다"
@@ -99,23 +149,36 @@
             선택하기
           </button>
         </div>
-        <div class="select-card">
-          <p>보너스 타임</p>
-          <img
-            src="../images/background/bonus.png"
-            alt="보너스 타임"
-            width="340px"
-            height="270px"
-          />
-          <button class="select_s_btn" onclick="selectStage(this,'bonus')">
-            선택하기
-          </button>
-        </div>
       </div>
     </div>
 
     <div id="buttonDiv">
       <button onclick="startGame()" class="normal_btn">탈출하러 가기!!</button>
+    </div>
+
+    <!-- 도움말 버튼 -->
+    <button id="helpBtn">
+      <img src="../images/description.png" alt="도움말" />
+    </button>
+
+    <!-- 도움말 내용 플로팅 박스 -->
+    <div id="helpModal">
+      <div class="help-content">
+        <h2>게임 플레이 방법</h2>
+        <ul>
+          <li>← → 방향키로 바를 움직이세요</li>
+          <li>공이 닿는 바의 위치에 따라서 공이 움직이는 각도가 변화합니다</li>
+          <li>스테이지는 총 세 스테이지이며,</li>
+          <li>쿠키로 벽돌을 모두 깨면 다음 스테이지로 이동합니다</li>
+          <li>각 쿠키의 능력은 S 키 다운 시 발동 시킬 수 있습니다</li>
+          <li>각 쿠키의 능력은 스테이지당 한 번 사용 가능합니다</li>
+          <li>
+            벽돌을 깨면 일정확률로 일정 시간 동안 아이템 효과가 적용됩니다
+          </li>
+          <li>거대화: 쿠기가 커짐 / 광속 질주: 쿠키가 빨라짐</li>
+        </ul>
+        <button onclick="closeHelp()" class="close-btn">닫기</button>
+      </div>
     </div>
   </body>
 </html>
